@@ -4,14 +4,18 @@ using UnityEngine;
 
 public class FruitObject : MonoBehaviour {
 
-    #region enum
+    #region 參數參考區
 
     /// <summary>
-    /// 水果種類
+    /// 本體的水果種類
     /// </summary>
-    public enum FruitType {
+    [SerializeField]
+    private FruitType m_fruitType;
 
-    }
+    /// <summary>
+    /// 本體的水果種類
+    /// </summary>
+    public FruitType FruitType { get { return m_fruitType; } }
 
     #endregion
 
