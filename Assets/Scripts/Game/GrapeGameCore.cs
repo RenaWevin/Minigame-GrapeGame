@@ -46,6 +46,9 @@ public class GrapeGameCore : MonoBehaviour {
 
     private float moveSpeed = 3f;
 
+    //目前在場上已生成的水果
+    private readonly List<FruitObject> fruitsInScene = new List<FruitObject>();
+
     #endregion
     #region Unity內建方法
 
@@ -55,10 +58,20 @@ public class GrapeGameCore : MonoBehaviour {
 
     void Update() {
         if (Input.GetKeyDown(KeyCode.S)) {
-            var newFruit = fruitFactory.SpawnFruit(FruitType.Watermelon);
+            int typeId = Random.Range((int)FruitType.Grape, (int)FruitType.HealingLuka_Uhhuh+1);
+            var newFruit = fruitFactory.SpawnFruit((FruitType)typeId);
             newFruit.transform.SetParent(parent: trans_FruitContainer, worldPositionStays: true);
             newFruit.transform.position = spawnPoint.position;
             newFruit.gameObject.name += System.DateTime.Now.Second.ToString();
+            fruitsInScene.Add(newFruit);
+        }
+        if (Input.GetKeyDown(KeyCode.D)) {
+            //刪除水果
+            if (fruitsInScene.Count > 0) {
+                var toDispose = fruitsInScene[0];
+                fruitsInScene.RemoveAt(0);
+                fruitFactory.DisposeFruit(toDispose);
+            }
         }
 
         if (Input.GetKey(KeyCode.LeftArrow)) {
