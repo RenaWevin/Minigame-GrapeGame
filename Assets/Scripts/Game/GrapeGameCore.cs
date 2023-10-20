@@ -55,7 +55,7 @@ public class GrapeGameCore : MonoBehaviour {
 
     void Update() {
         if (Input.GetKeyDown(KeyCode.S)) {
-            var newFruit = fruitFactory.SpawnFruit();
+            var newFruit = fruitFactory.SpawnFruit(FruitType.Watermelon);
             newFruit.transform.SetParent(parent: trans_FruitContainer, worldPositionStays: true);
             newFruit.transform.position = spawnPoint.position;
             newFruit.gameObject.name += System.DateTime.Now.Second.ToString();
