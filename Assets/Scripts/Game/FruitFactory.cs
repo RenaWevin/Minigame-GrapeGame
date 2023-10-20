@@ -52,7 +52,7 @@ public class FruitFactory : MonoBehaviour {
         for (int i = 0; i < fruitPrefab_OriginalList.Count; i++) {
             var item = fruitPrefab_OriginalList[i];
             if (fruitPrefab_OriginalDict.ContainsKey(item.FruitType)) {
-                Log.Error("有重複FruitType的水果被加入到參照 (FruitPrefab_OriginalList)\n水果的Type設定是否有設定錯誤？");
+                Log.Error($"有重複FruitType({item.FruitType})的水果被加入到參照 (FruitPrefab_OriginalList)\n水果的Type設定是否有設定錯誤？");
                 continue;
             }
             fruitPrefab_OriginalDict.Add(item.FruitType, item);
@@ -82,12 +82,12 @@ public class FruitFactory : MonoBehaviour {
                 if (fruitPrefab_OriginalDict.TryGetValue(type, out FruitObject newObj)) {
                     output = Instantiate<FruitObject>(original: newObj, parent: trans_Spawn);
                 } else {
-                    Log.Error("指定的水果種類在字典中不存在！");
+                    Log.Error($"指定的水果種類{type}({(int)type})在生成字典中不存在！");
                     return null;
                 }
             }
         } else {
-            Log.Error("指定的水果種類無效！");
+            Log.Error($"指定的水果種類{type}({(int)type})無效！");
             return null;
         }
         output.gameObject.SetActive(true);
