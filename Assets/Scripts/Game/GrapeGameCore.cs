@@ -1,5 +1,6 @@
 ﻿
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class GrapeGameCore : MonoBehaviour {
@@ -42,6 +43,12 @@ public class GrapeGameCore : MonoBehaviour {
     private Transform spawnPoint;
 
     /// <summary>
+    /// 水果重生點
+    /// </summary>
+    [SerializeField]
+    private Transform spawnPointContainer;
+
+    /// <summary>
     /// 水果物件放置容器
     /// </summary>
     [SerializeField]
@@ -53,6 +60,11 @@ public class GrapeGameCore : MonoBehaviour {
     private Vector3 spawnPointOriginal;
 
     private float moveSpeed = 3f;
+
+    //在重生游標上的水果
+    private FruitObject fruitOnSpawnpointCursor = null;
+    //下一個水果種類
+    private FruitType nextSpawnFruitType = FruitType.Grape;
 
     //目前在場上已生成的水果
     private readonly List<FruitObject> fruitsInScene = new List<FruitObject>();
@@ -70,6 +82,17 @@ public class GrapeGameCore : MonoBehaviour {
     void Awake() {
         //初始化重生點位置
         spawnPointOriginal = spawnPoint.position;
+        //生成一顆水果在重生點
+        FruitType spawnpointFruitType = NewRandomFruitType();
+        fruitOnSpawnpointCursor = SpawnFruit(
+            type: spawnpointFruitType,
+            parent: spawnPointContainer,
+            worldPosition: spawnPointContainer.position
+        );
+        fruitOnSpawnpointCursor.SetEnablePhysics(false);
+        //預先隨機NEXT
+        nextSpawnFruitType = NewRandomFruitType();
+        //刷新NEXT圖片★
     }
 
     #endregion
@@ -77,17 +100,25 @@ public class GrapeGameCore : MonoBehaviour {
 
     void Update() {
         if (Input.GetKeyDown(KeyCode.S)) {
-            int typeId = Random.Range((int)FruitType.Grape, (int)FruitType.HealingLuka_Uhhuh);
+            //允許重生點水果物理、處理下一個水果
+            if (fruitOnSpawnpointCursor != null) {
+                fruitOnSpawnpointCursor?.SetEnablePhysics(true);
+                fruitOnSpawnpointCursor?.transform.SetParent(trans_FruitContainer, worldPositionStays: true);
+                fruitOnSpawnpointCursor = null;
+                CoroutineNextFruit();
+            }
+
+            //int typeId = Random.Range((int)FruitType.Grape, (int)FruitType.HealingLuka_Uhhuh);
             //var newFruit = fruitFactory.SpawnFruit((FruitType)typeId);
             //newFruit.transform.SetParent(parent: trans_FruitContainer, worldPositionStays: true);
             //newFruit.transform.position = spawnPoint.position;
             //newFruit.gameObject.name += System.DateTime.Now.Second.ToString();
             //fruitsInScene.Add(newFruit);
-            SpawnFruit(
-                type: (FruitType)typeId,
-                parent: trans_FruitContainer,
-                worldPosition: spawnPoint.position
-            );
+            //SpawnFruit(
+            //    type: (FruitType)typeId,
+            //    parent: trans_FruitContainer,
+            //    worldPosition: spawnPoint.position
+            //);
         }
         if (Input.GetKeyDown(KeyCode.D)) {
             //刪除水果
@@ -196,6 +227,20 @@ public class GrapeGameCore : MonoBehaviour {
     #region 水果生成刪除相關
 
     /// <summary>
+    /// 生成一個新的隨機水果種類(可以手放生成的)
+    /// </summary>
+    /// <returns></returns>
+    private FruitType NewRandomFruitType() {
+        int jokerChanse = Random.Range(0, 100);
+        if (jokerChanse <= 5) {
+            Log.Info("生成Joker");
+            //★ return FruitType.Joker;
+        }
+        int typeId = Random.Range((int)FruitType.Grape, (int)FruitType.HealingLuka_Uhhuh);
+        return (FruitType)typeId;
+    }
+
+    /// <summary>
     /// 從水果工廠生成指定種類水果
     /// </summary>
     /// <param name="type"></param>
@@ -223,6 +268,27 @@ public class GrapeGameCore : MonoBehaviour {
         } else {
             Log.Error($"水果{toDispose.name}已經不在場上了！");
         }
+    }
+
+    #endregion
+    #region Task-刷新下一個水果
+
+    /// <summary>
+    /// 刷新下一個水果
+    /// </summary>
+    private async void CoroutineNextFruit() {
+        //等待0.5秒再生成水果與刷新下一個NEXT
+        await Task.Delay(500);
+        //生成水果
+        fruitOnSpawnpointCursor = SpawnFruit(
+            type: nextSpawnFruitType,
+            parent: spawnPointContainer,
+            worldPosition: spawnPointContainer.position
+        );
+        fruitOnSpawnpointCursor.SetEnablePhysics(false);
+        //下一個
+        nextSpawnFruitType = NewRandomFruitType();
+        //刷新NEXT圖片★
     }
 
     #endregion

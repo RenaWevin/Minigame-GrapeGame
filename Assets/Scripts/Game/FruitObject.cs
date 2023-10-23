@@ -18,6 +18,15 @@ public class FruitObject : MonoBehaviour {
     public FruitType FruitType { get { return m_fruitType; } }
 
     #endregion
+    #region Inspector資源區
+
+    [SerializeField]
+    private Collider2D myCollider2D;
+
+    [SerializeField]
+    private Rigidbody2D myRigidbody2D;
+
+    #endregion
     #region 外部方法-檢查自己與另一個水果是否可以結合 
 
     /// <summary>
@@ -30,6 +39,18 @@ public class FruitObject : MonoBehaviour {
         bool sameType = this.FruitType == other.FruitType;
         bool containsJoker = (this.FruitType == FruitType.Joker || other.FruitType == FruitType.Joker);
         return sameType || containsJoker;
+    }
+
+    #endregion
+    #region 外部方法-啟用/關閉此水果的物理系統
+
+    /// <summary>
+    /// 啟用/關閉此水果的物理系統
+    /// </summary>
+    /// <param name="value"></param>
+    public void SetEnablePhysics(bool value) {
+        myCollider2D.enabled = value;
+        myRigidbody2D.simulated = value;
     }
 
     #endregion
