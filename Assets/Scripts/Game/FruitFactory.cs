@@ -72,6 +72,10 @@ public class FruitFactory : MonoBehaviour {
     /// </summary>
     /// <returns></returns>
     public FruitObject SpawnFruit(FruitType type) {
+        if (type == FruitType.Disappear) {
+            Log.Warning("指定生成的水果種類為FruitType.Disappear，將不生成任何水果");
+            return null;
+        }
         FruitObject output;
         if (objPool_Fruits.ContainsKey(type)) {
             if (objPool_Fruits[type].Count > 0) {
