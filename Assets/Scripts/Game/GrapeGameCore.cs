@@ -89,5 +89,19 @@ public class GrapeGameCore : MonoBehaviour {
     }
 
     #endregion
+    #region 水果結合相關
+
+    #region  -> 外部申請結合
+
+    /// <summary>
+    /// 申請結合
+    /// </summary>
+    public void ApplyForFruitCombine(FruitObject self, FruitObject target) {
+
+    }
+
+    #endregion
+
+    #endregion
 
 }
