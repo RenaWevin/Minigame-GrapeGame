@@ -49,8 +49,6 @@ public class GrapeGameCore : MonoBehaviour {
     //目前在場上已生成的水果
     private readonly List<FruitObject> fruitsInScene = new List<FruitObject>();
     
-    private readonly HashSet<FruitObject> fruitObjects = new HashSet<FruitObject>();
-
     #endregion
     #region Unity內建方法
 
@@ -66,15 +64,12 @@ public class GrapeGameCore : MonoBehaviour {
             newFruit.transform.position = spawnPoint.position;
             newFruit.gameObject.name += System.DateTime.Now.Second.ToString();
             fruitsInScene.Add(newFruit);
-            fruitObjects.Add(newFruit);
         }
         if (Input.GetKeyDown(KeyCode.D)) {
             //刪除水果
             if (fruitsInScene.Count > 0) {
                 var toDispose = fruitsInScene[0];
-                //fruitsInScene.RemoveAt(0);
                 fruitsInScene.Remove(toDispose);
-                fruitObjects.Remove(toDispose);
                 fruitFactory.DisposeFruit(toDispose);
             }
         }
