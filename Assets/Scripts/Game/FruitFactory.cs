@@ -8,12 +8,6 @@ public class FruitFactory : MonoBehaviour {
     #region Inspector資源區
 
     /// <summary>
-    /// 水果生成來源
-    /// </summary>
-    [SerializeField]
-    private FruitObject fruitPrefab_Original;
-
-    /// <summary>
     /// 各種水果生成來源參照(僅供Inspector編輯)
     /// </summary>
     [SerializeField]
