@@ -108,6 +108,10 @@ public class FruitFactory : MonoBehaviour {
     public void DisposeFruit(FruitObject toDispose) {
         FruitType type = toDispose.FruitType;
         if (objPool_Fruits.ContainsKey(type)) {
+            if (objPool_Fruits[type].Contains(toDispose)) {
+                //已經回收好這個水果了，跳過
+                return;
+            }
             toDispose.gameObject.SetActive(false);
             toDispose.transform.SetParent(parent: trans_ObjectPool, worldPositionStays: true);
             objPool_Fruits[type].Enqueue(toDispose);

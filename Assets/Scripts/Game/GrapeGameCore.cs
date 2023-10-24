@@ -262,12 +262,8 @@ public class GrapeGameCore : MonoBehaviour {
     /// </summary>
     /// <param name="toDispose"></param>
     private void DisposeFruit(FruitObject toDispose) {
-        if (fruitsInScene.Contains(toDispose)) {
-            fruitsInScene.Remove(toDispose);
-            fruitFactory.DisposeFruit(toDispose);
-        } else {
-            Log.Error($"水果{toDispose.name}已經不在場上了！");
-        }
+        fruitsInScene.Remove(toDispose);
+        fruitFactory.DisposeFruit(toDispose);
     }
 
     #endregion
