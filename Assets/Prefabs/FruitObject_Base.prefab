@@ -48,6 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_fruitType: 1
+  mySpriteRenderer: {fileID: 1594017709356308485}
   myCollider2D: {fileID: 3357934956535423289}
   myRigidbody2D: {fileID: 7457003107766025959}
 --- !u!212 &1594017709356308485

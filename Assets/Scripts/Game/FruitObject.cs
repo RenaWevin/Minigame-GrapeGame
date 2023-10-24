@@ -21,6 +21,9 @@ public class FruitObject : MonoBehaviour {
     #region Inspector資源區
 
     [SerializeField]
+    private SpriteRenderer mySpriteRenderer;
+
+    [SerializeField]
     private Collider2D myCollider2D;
 
     [SerializeField]
@@ -51,6 +54,17 @@ public class FruitObject : MonoBehaviour {
     public void SetEnablePhysics(bool value) {
         myCollider2D.enabled = value;
         myRigidbody2D.simulated = value;
+    }
+
+    #endregion
+    #region 外部方法-設定Sprite
+
+    /// <summary>
+    /// 設定Sprite
+    /// </summary>
+    /// <param name="sprite"></param>
+    public void SetSprite(Sprite sprite) {
+        mySpriteRenderer.sprite = sprite;
     }
 
     #endregion
