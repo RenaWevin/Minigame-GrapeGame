@@ -83,12 +83,9 @@ public class FruitObject : MonoBehaviour {
         if (otherComponent != null) {
             if (this.FruitType == otherComponent.FruitType) {
                 //同種水果，向遊戲核心申請結合
-                Log.Warning($"{this.gameObject.name}與{collision.gameObject.name}可以結合");
                 Core.Instance.grapeGameCore.ApplyForFruitCombine(this, otherComponent);
             }
         }
-        //測試
-        Log.Info($"{this.gameObject.name} : {collision.gameObject.name}");
     }
 
 }
