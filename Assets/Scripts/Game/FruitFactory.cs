@@ -7,17 +7,34 @@ public class FruitFactory : MonoBehaviour {
 
     #region Inspector資源區
 
+    #region  -> 各種水果生成物件來源參照
+
+    [Header("各種水果物件生成來源參照")]
     /// <summary>
-    /// 各種水果生成來源參照(僅供Inspector編輯)
+    /// 各種水果生成物件來源參照(僅供Inspector編輯)
     /// </summary>
     [SerializeField]
     private List<FruitObject> fruitPrefab_OriginalList = new List<FruitObject>();
 
+    #endregion
+    #region  -> 水果圖片參照
+
+    //[Header("物件池本體Transform")]
+    //[SerializeField]
+    //private List<>
+    //★
+
+    #endregion
+    #region  -> 物件池本體Transform
+
+    [Header("物件池本體Transform")]
     /// <summary>
     /// 物件池本體Transform
     /// </summary>
     [SerializeField]
     private Transform trans_ObjectPool;
+
+    #endregion
 
     #endregion
     #region 程式碼控制資源區
