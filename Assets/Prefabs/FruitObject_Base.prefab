@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1594017709356308490}
   - component: {fileID: 1594017709356308491}
   - component: {fileID: 1594017709356308485}
-  - component: {fileID: 3357934956535423289}
+  - component: {fileID: 3407471512766515622}
   - component: {fileID: 7457003107766025959}
   m_Layer: 0
   m_Name: FruitObject_Base
@@ -49,7 +49,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_fruitType: 1
   mySpriteRenderer: {fileID: 1594017709356308485}
-  myCollider2D: {fileID: 3357934956535423289}
+  myCollider2D: {fileID: 3407471512766515622}
   myRigidbody2D: {fileID: 7457003107766025959}
 --- !u!212 &1594017709356308485
 SpriteRenderer:
@@ -103,8 +103,8 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!58 &3357934956535423289
-CircleCollider2D:
+--- !u!70 &3407471512766515622
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -117,8 +117,8 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.5
+  m_Size: {x: 1, y: 1}
+  m_Direction: 0
 --- !u!50 &7457003107766025959
 Rigidbody2D:
   serializedVersion: 4

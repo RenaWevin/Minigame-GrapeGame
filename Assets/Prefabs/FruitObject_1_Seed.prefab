@@ -75,5 +75,9 @@ PrefabInstance:
       propertyPath: m_fruitType
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3407471512766515622, guid: 5ee978df8fb0a684b99f0f8ede4fdb10, type: 3}
+      propertyPath: m_Size.x
+      value: 0.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5ee978df8fb0a684b99f0f8ede4fdb10, type: 3}
