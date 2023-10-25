@@ -251,7 +251,6 @@ public class GrapeGameCore : MonoBehaviour {
         var newFruit = fruitFactory.SpawnFruit(type);
         newFruit.transform.SetParent(parent: parent, worldPositionStays: true);
         newFruit.transform.position = worldPosition;
-        newFruit.gameObject.name += System.DateTime.Now.Second.ToString();
         fruitsInScene.Add(newFruit);
 
         return newFruit;
