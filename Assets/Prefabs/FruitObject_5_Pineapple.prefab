@@ -9,7 +9,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1594017709356308484, guid: 5ee978df8fb0a684b99f0f8ede4fdb10, type: 3}
       propertyPath: m_Name
-      value: FruitObject_3_Pineapple
+      value: FruitObject_5_Pineapple
       objectReference: {fileID: 0}
     - target: {fileID: 1594017709356308485, guid: 5ee978df8fb0a684b99f0f8ede4fdb10, type: 3}
       propertyPath: m_Sprite
@@ -18,6 +18,18 @@ PrefabInstance:
     - target: {fileID: 1594017709356308490, guid: 5ee978df8fb0a684b99f0f8ede4fdb10, type: 3}
       propertyPath: m_RootOrder
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1594017709356308490, guid: 5ee978df8fb0a684b99f0f8ede4fdb10, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1594017709356308490, guid: 5ee978df8fb0a684b99f0f8ede4fdb10, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1594017709356308490, guid: 5ee978df8fb0a684b99f0f8ede4fdb10, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 1594017709356308490, guid: 5ee978df8fb0a684b99f0f8ede4fdb10, type: 3}
       propertyPath: m_LocalPosition.x
