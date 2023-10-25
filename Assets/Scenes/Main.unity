@@ -2113,8 +2113,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fce072dccd7cd442be0ace4a0f30b2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fruitPrefab_Original: {fileID: 1594017709356308491, guid: 5ee978df8fb0a684b99f0f8ede4fdb10, type: 3}
   fruitPrefab_OriginalList:
+  - {fileID: 2733623110122272530, guid: a1369465391d2b946a4c9b90375fc6d4, type: 3}
+  - {fileID: 2733623110122272530, guid: 8d76f3008a4e9f54fa5bfb2d1b0845f7, type: 3}
   - {fileID: 2733623110122272530, guid: eaf07d3503c6c864489ffd1ecd3188c0, type: 3}
   - {fileID: 2733623110122272530, guid: ab08daf6c60bce147a8c7fd0dc9f283e, type: 3}
   - {fileID: 2733623110122272530, guid: 3025222b6b8327f42b04907a7d0e475c, type: 3}

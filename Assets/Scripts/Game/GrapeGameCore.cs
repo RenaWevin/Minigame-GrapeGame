@@ -236,7 +236,7 @@ public class GrapeGameCore : MonoBehaviour {
             Log.Info("生成Joker");
             //★ return FruitType.Joker;
         }
-        int typeId = Random.Range((int)FruitType.Grape, (int)FruitType.HealingLuka_Uhhuh);
+        int typeId = Random.Range((int)FruitType.Seed, (int)FruitType.Apple);
         return (FruitType)typeId;
     }
 
