@@ -9,12 +9,12 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1594017709356308484, guid: 5ee978df8fb0a684b99f0f8ede4fdb10, type: 3}
       propertyPath: m_Name
-      value: FruitObject_7
+      value: FruitObject_9
       objectReference: {fileID: 0}
     - target: {fileID: 1594017709356308485, guid: 5ee978df8fb0a684b99f0f8ede4fdb10, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: d574ed93fc3333f41accaa8fdf1022cd, type: 3}
+      objectReference: {fileID: 21300000, guid: a49275626c4a76649b222e7a152e33cb, type: 3}
     - target: {fileID: 1594017709356308490, guid: 5ee978df8fb0a684b99f0f8ede4fdb10, type: 3}
       propertyPath: m_RootOrder
       value: 0
