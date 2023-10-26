@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GrapeGameCore : MonoBehaviour {
 
@@ -14,6 +15,15 @@ public class GrapeGameCore : MonoBehaviour {
     private FruitFactory fruitFactory;
 
     #endregion
+    #region UI物件參照區
+
+    [SerializeField, Header("UI整個頁面CanvasGroup")]
+    private CanvasGroup CanvasGroup_Page;
+
+    [SerializeField, Header("遊戲所有物件的根物件")]
+    private GameObject Obj_GameSceneObjectsRoot;
+
+    #endregion
     #region 容器-水果配對
 
     private struct PendingFruitsPair {
@@ -24,6 +34,7 @@ public class GrapeGameCore : MonoBehaviour {
     #endregion
     #region 遊戲物件參照區
 
+    [Header("游標邊界")]
     /// <summary>
     /// 移動游標左側邊界
     /// </summary>
@@ -39,19 +50,19 @@ public class GrapeGameCore : MonoBehaviour {
     /// <summary>
     /// 水果重生點
     /// </summary>
-    [SerializeField]
+    [SerializeField, Header("水果重生點")]
     private Transform spawnPoint;
 
     /// <summary>
-    /// 水果重生點
+    /// 水果重生點顯示水果的位置
     /// </summary>
-    [SerializeField]
+    [SerializeField, Header("水果重生點顯示水果的位置")]
     private Transform spawnPointContainer;
 
     /// <summary>
     /// 水果物件放置容器
     /// </summary>
-    [SerializeField]
+    [SerializeField, Header("水果物件放置容器")]
     private Transform trans_FruitContainer;
 
     #endregion
@@ -150,6 +161,17 @@ public class GrapeGameCore : MonoBehaviour {
     }
 
     #endregion
+
+    #endregion
+    #region 開關頁面
+
+    /// <summary>
+    /// 開關頁面
+    /// </summary>
+    public void SetEnableGamePage(bool value) {
+        CanvasGroup_Page.SetEnable(value);
+        Obj_GameSceneObjectsRoot.SetActive(value);
+    }
 
     #endregion
     #region 水果結合相關
