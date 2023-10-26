@@ -252,7 +252,17 @@ public class GrapeGameCore : MonoBehaviour {
         newFruit.transform.SetParent(parent: parent, worldPositionStays: true);
         newFruit.transform.position = worldPosition;
         fruitsInScene.Add(newFruit);
-        newFruit.transform.rotation = Quaternion.Euler(0, 0, Random.Range(0, 360));
+        Quaternion newRotation;
+        switch (type) {
+            case FruitType.Seed:
+            case FruitType.Papaya:
+                newRotation = Quaternion.Euler(0, 0, Random.Range(0, 360));
+                break;
+            default:
+                newRotation = Quaternion.identity;
+                break;
+        }
+        newFruit.transform.rotation = newRotation;
         return newFruit;
     }
 
