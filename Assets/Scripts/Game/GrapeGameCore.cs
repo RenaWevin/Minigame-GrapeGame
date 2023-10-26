@@ -23,6 +23,9 @@ public class GrapeGameCore : MonoBehaviour {
     [SerializeField, Header("遊戲所有物件的根物件")]
     private GameObject Obj_GameSceneObjectsRoot;
 
+    [SerializeField, Header("離開遊戲按鈕")]
+    private Button Button_StopGame;
+
     #endregion
     #region 容器-水果配對
 
@@ -68,6 +71,11 @@ public class GrapeGameCore : MonoBehaviour {
     #endregion
     #region 參數參考區
 
+    /// <summary>
+    /// 遊戲正在進行中
+    /// </summary>
+    private bool gamePlaying = false;
+
     private Vector3 spawnPointOriginal;
 
     private float moveSpeed = 3f;
@@ -93,23 +101,17 @@ public class GrapeGameCore : MonoBehaviour {
     void Awake() {
         //初始化重生點位置
         spawnPointOriginal = spawnPoint.position;
-        //生成一顆水果在重生點
-        FruitType spawnpointFruitType = NewRandomFruitType();
-        fruitOnSpawnpointCursor = SpawnFruit(
-            type: spawnpointFruitType,
-            parent: spawnPointContainer,
-            worldPosition: spawnPointContainer.position
-        );
-        fruitOnSpawnpointCursor.SetEnablePhysics(false);
-        //預先隨機NEXT
-        nextSpawnFruitType = NewRandomFruitType();
-        //刷新NEXT圖片★
+        //重設遊戲
+        ResetGame();
+        //按鈕設定
+        Button_StopGame.onClick.AddListener(OnClick_Button_StopGame);
     }
 
     #endregion
     #region  -> Update
 
     void Update() {
+        if (!gamePlaying) { return; }
         if (Input.GetKeyDown(KeyCode.S)) {
             //允許重生點水果物理、處理下一個水果
             if (fruitOnSpawnpointCursor != null) {
@@ -157,6 +159,7 @@ public class GrapeGameCore : MonoBehaviour {
     #region  -> FixedUpdate
 
     private void FixedUpdate() {
+        if (!gamePlaying) { return; }
         ExecuteAllCombineApplies();
     }
 
@@ -297,6 +300,16 @@ public class GrapeGameCore : MonoBehaviour {
         fruitFactory.DisposeFruit(toDispose);
     }
 
+    /// <summary>
+    /// 刪除全部水果
+    /// </summary>
+    private void DisposeAllFruit() {
+        for (int i = 0; i < fruitsInScene.Count; i++) {
+            fruitFactory.DisposeFruit(fruitsInScene[i]);
+        }
+        fruitsInScene.Clear();
+    }
+
     #endregion
     #region Task-刷新下一個水果
 
@@ -316,6 +329,73 @@ public class GrapeGameCore : MonoBehaviour {
         //下一個
         nextSpawnFruitType = NewRandomFruitType();
         //刷新NEXT圖片★
+    }
+
+    #endregion
+    #region 外部方法-重設遊戲 
+
+    /// <summary>
+    /// 重設遊戲
+    /// </summary>
+    public void ResetGame() {
+        //關閉遊戲狀態
+        gamePlaying = false;
+        //清除所有水果
+        DisposeAllFruit();
+        //清除目前分數
+        //★
+        //初始化重生點位置
+        spawnPoint.position = spawnPointOriginal;
+    }
+
+    #endregion
+    #region 外部方法-開始遊戲 
+
+    /// <summary>
+    /// 重設遊戲
+    /// </summary>
+    public void StartGame() {
+        //開啟遊戲狀態
+        gamePlaying = true;
+        //生成一顆水果在重生點
+        FruitType spawnpointFruitType = NewRandomFruitType();
+        fruitOnSpawnpointCursor = SpawnFruit(
+            type: spawnpointFruitType,
+            parent: spawnPointContainer,
+            worldPosition: spawnPointContainer.position
+        );
+        fruitOnSpawnpointCursor.SetEnablePhysics(false);
+        //預先隨機NEXT
+        nextSpawnFruitType = NewRandomFruitType();
+        //刷新NEXT圖片
+        //★
+        //抓取前三名分數並顯示
+        //★
+    }
+
+    #endregion
+    #region 外部方法-停止遊戲
+
+    /// <summary>
+    /// 停止遊戲
+    /// </summary>
+    public void StopGame() {
+        //關閉遊戲狀態
+        gamePlaying = false;
+        //清除所有水果
+        DisposeAllFruit();
+    }
+
+    #endregion
+    #region UI按鈕事件
+
+    /// <summary>
+    /// 按下離開遊戲按鈕
+    /// </summary>
+    private void OnClick_Button_StopGame() {
+        StopGame();
+        SetEnableGamePage(false);
+        Core.Instance.titlePage.SetEnableTitlePage(true);
     }
 
     #endregion
