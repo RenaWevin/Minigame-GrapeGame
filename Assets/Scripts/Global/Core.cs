@@ -11,6 +11,9 @@ public class Core : MonoBehaviour {
     #region Components
 
     [SerializeField]
+    public TitlePage titlePage;
+
+    [SerializeField]
     public GrapeGameCore grapeGameCore;
 
     #endregion
