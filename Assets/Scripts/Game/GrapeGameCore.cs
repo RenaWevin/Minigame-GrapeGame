@@ -26,6 +26,9 @@ public class GrapeGameCore : MonoBehaviour {
     [SerializeField, Header("離開遊戲按鈕")]
     private Button Button_StopGame;
 
+    [SerializeField, Header("右側進化列表物件")]
+    private List<FruitEvolutionListObject> fruitEvolutionListObjects = new List<FruitEvolutionListObject>();
+
     #endregion
     #region 容器-水果配對
 
@@ -371,6 +374,8 @@ public class GrapeGameCore : MonoBehaviour {
         //★
         //抓取前三名分數並顯示
         //★
+        //更新右側進化列表物件
+        UpdateDisplay_FruitEvolutionList();
     }
 
     #endregion
@@ -384,6 +389,27 @@ public class GrapeGameCore : MonoBehaviour {
         gamePlaying = false;
         //清除所有水果
         DisposeAllFruit();
+    }
+
+    #endregion
+    #region UI更新事件-更新右側進化列表物件
+
+    /// <summary>
+    /// 更新右側進化列表物件
+    /// </summary>
+    private void UpdateDisplay_FruitEvolutionList() {
+        bool show_HealingLuka_Uhhuh = false; //★之後還要從遊戲存檔讀取現在能不能顯示
+        FruitSpriteType fruitSpriteType = FruitSpriteType.TofuSkin; //★之後還要從遊戲存檔讀取現在是選哪一個
+        for (int i = 0; i < fruitEvolutionListObjects.Count; i++) {
+            var obj = fruitEvolutionListObjects[i];
+            var fruitType = obj.fruitType;
+            obj.SetSprite(fruitFactory.GetFruitSprite(fruitSpriteType, fruitType));
+            //obj.SetFruitName(); ★需要取得水果名字
+            obj.SetImageScale((fruitType == FruitType.Pineapple) ? new Vector3(2, 2, 2) : Vector3.one); //鳳梨特製大小
+            if (fruitType == FruitType.HealingLuka_Uhhuh) {
+                obj.gameObject.SetActive(show_HealingLuka_Uhhuh);
+            }
+        }
     }
 
     #endregion
