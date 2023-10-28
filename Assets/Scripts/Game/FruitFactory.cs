@@ -56,15 +56,6 @@ public class FruitFactory : MonoBehaviour {
     /// </summary>
     private readonly Dictionary<FruitType, FruitObject> fruitPrefab_OriginalDict = new Dictionary<FruitType, FruitObject>();
 
-    ///// <summary>
-    ///// 普通水果的圖片
-    ///// </summary>
-    //private readonly Dictionary<FruitType, Sprite> fruitSprite_Normal_Dict = new Dictionary<FruitType, Sprite>();
-    ///// <summary>
-    ///// 豆皮版水果的圖片
-    ///// </summary>
-    //private readonly Dictionary<FruitType, Sprite> fruitSprite_TofuSkin_Dict = new Dictionary<FruitType, Sprite>();
-
     /// <summary>
     /// 水果的圖片參照
     /// </summary>
