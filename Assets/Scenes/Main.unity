@@ -4050,7 +4050,7 @@ MonoBehaviour:
   - fruitType: 3
     sprite: {fileID: 21300000, guid: d4b9ee35ec7ce9d4ea2e7bcc651e8c78, type: 3}
   - fruitType: 4
-    sprite: {fileID: 21300000, guid: 3ff5e398513e25042ab08a9cba432714, type: 3}
+    sprite: {fileID: 21300000, guid: 37fefa2d2cd64fe4e96740a22505c433, type: 3}
   - fruitType: 5
     sprite: {fileID: 21300000, guid: 129f2f8e8ebb4924a9f17da7196ffaeb, type: 3}
   - fruitType: 6
