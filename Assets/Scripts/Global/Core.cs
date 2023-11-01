@@ -19,6 +19,12 @@ public class Core : MonoBehaviour {
     [SerializeField]
     public HowToPlayPage howToPlayPage;
 
+    [SerializeField]
+    public LeaderBoardPage leaderboardPage;
+
+    [SerializeField]
+    public OptionsPage optionsPage;
+
     #endregion
 
     private void Awake() {

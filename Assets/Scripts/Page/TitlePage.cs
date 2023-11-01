@@ -32,6 +32,8 @@ public class TitlePage : MonoBehaviour {
 
         Button_Start.onClick.AddListener(OnClick_Start);
         Button_HowToPlay.onClick.AddListener(OnClick_HowToPlay);
+        Button_Leaderboard.onClick.AddListener(OnClick_Leaderboard);
+        Button_Options.onClick.AddListener(OnClick_Options);
         Button_Exit.onClick.AddListener(OnClick_Exit);
     }
 
@@ -64,6 +66,20 @@ public class TitlePage : MonoBehaviour {
     /// </summary>
     private void OnClick_HowToPlay() {
         Core.Instance.howToPlayPage.SetShowWindow(true);
+    }
+
+    /// <summary>
+    /// 按下高分紀錄
+    /// </summary>
+    private void OnClick_Leaderboard() {
+        Core.Instance.leaderboardPage.SetShowWindow(true);
+    }
+
+    /// <summary>
+    /// 按下設定畫面
+    /// </summary>
+    private void OnClick_Options() {
+        Core.Instance.optionsPage.SetShowWindow(true);
     }
 
     /// <summary>
