@@ -16,6 +16,9 @@ public class Core : MonoBehaviour {
     [SerializeField]
     public GrapeGameCore grapeGameCore;
 
+    [SerializeField]
+    public HowToPlayPage howToPlayPage;
+
     #endregion
 
     private void Awake() {

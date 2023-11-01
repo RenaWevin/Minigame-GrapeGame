@@ -2172,6 +2172,52 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &740714535
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 740714536}
+  - component: {fileID: 740714537}
+  m_Layer: 0
+  m_Name: HowToPlayPage
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &740714536
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 740714535}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1262093551}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &740714537
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 740714535}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39b98acf671f52a43ac401ee489e3ffb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canvasGroupWindow: {fileID: 2004749410}
+  Button_Close: {fileID: 1447764348}
 --- !u!1 &760640326
 GameObject:
   m_ObjectHideFlags: 0
@@ -3637,6 +3683,7 @@ Transform:
   m_Children:
   - {fileID: 1432155458}
   - {fileID: 1914108882}
+  - {fileID: 740714536}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3654,6 +3701,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   titlePage: {fileID: 1432155459}
   grapeGameCore: {fileID: 1914108883}
+  howToPlayPage: {fileID: 740714537}
 --- !u!1 &1263715943
 GameObject:
   m_ObjectHideFlags: 0
@@ -4458,6 +4506,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4103058896867467780, guid: b20b99e727c44cd449916e817ccf677c, type: 3}
   m_PrefabInstance: {fileID: 1447764346}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1447764348 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4103058896867467783, guid: b20b99e727c44cd449916e817ccf677c, type: 3}
+  m_PrefabInstance: {fileID: 1447764346}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &1467685153 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4103058896867467780, guid: b20b99e727c44cd449916e817ccf677c, type: 3}
@@ -5630,6 +5689,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2004749409}
+  - component: {fileID: 2004749410}
   m_Layer: 5
   m_Name: Group_HowToPlay
   m_TagString: Untagged
@@ -5659,6 +5719,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2004749410
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2004749408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 891f976eef9c19541b6b97034cdb21ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Image_Blocker: {fileID: 2079021572}
+  m_CanvasGroup: {fileID: 1013290839}
+  m_Animator: {fileID: 1013290840}
 --- !u!114 &2026469634 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4103058896867467783, guid: b20b99e727c44cd449916e817ccf677c, type: 3}
@@ -5829,7 +5904,7 @@ GameObject:
   - component: {fileID: 2079021573}
   - component: {fileID: 2079021572}
   m_Layer: 5
-  m_Name: Image_BG_HowToPlay
+  m_Name: Image_Blocker_HowToPlay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

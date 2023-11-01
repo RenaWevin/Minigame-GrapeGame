@@ -31,6 +31,7 @@ public class TitlePage : MonoBehaviour {
         Text_Version.text = $"v{Application.version}";
 
         Button_Start.onClick.AddListener(OnClick_Start);
+        Button_HowToPlay.onClick.AddListener(OnClick_HowToPlay);
         Button_Exit.onClick.AddListener(OnClick_Exit);
     }
 
@@ -56,6 +57,13 @@ public class TitlePage : MonoBehaviour {
         gameCore.SetEnableGamePage(true);
         gameCore.ResetGame();
         gameCore.StartGame();
+    }
+
+    /// <summary>
+    /// 按下遊玩方法
+    /// </summary>
+    private void OnClick_HowToPlay() {
+        Core.Instance.howToPlayPage.SetShowWindow(true);
     }
 
     /// <summary>
