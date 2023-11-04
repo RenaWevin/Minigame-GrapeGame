@@ -132,6 +132,7 @@ public class FruitFactory : MonoBehaviour {
             Log.Error($"指定的水果種類{type}({(int)type})無效！");
             return null;
         }
+        output.ClearTouchedInfo();
         output.gameObject.SetActive(true);
         return output;
     }

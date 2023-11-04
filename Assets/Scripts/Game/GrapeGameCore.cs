@@ -14,6 +14,12 @@ public class GrapeGameCore : MonoBehaviour {
     [SerializeField]
     private FruitFactory fruitFactory;
 
+    /// <summary>
+    /// 水果堆疊上限碰撞箱觸發器
+    /// </summary>
+    [SerializeField]
+    private StackLimitTrigger stackLimitTrigger;
+
     #endregion
     #region UI物件參照區
 
@@ -79,6 +85,11 @@ public class GrapeGameCore : MonoBehaviour {
     /// </summary>
     private bool gamePlaying = false;
 
+    /// <summary>
+    /// 水果碰到天花板了
+    /// </summary>
+    private bool fruitTouchedLimitTrigger = false;
+
     private Vector3 spawnPointOriginal;
 
     private float moveSpeed = 3f;
@@ -108,13 +119,15 @@ public class GrapeGameCore : MonoBehaviour {
         ResetGame();
         //按鈕設定
         Button_StopGame.onClick.AddListener(OnClick_Button_StopGame);
+        //水果觸碰天花板設定
+        stackLimitTrigger.onFruitTouch.AddListener(OnTrigger_StackLimit);
     }
 
     #endregion
     #region  -> Update
 
     void Update() {
-        if (!gamePlaying) { return; }
+        if (!gamePlaying || fruitTouchedLimitTrigger) { return; }
         if (Input.GetKeyDown(KeyCode.S)) {
             //允許重生點水果物理、處理下一個水果
             if (fruitOnSpawnpointCursor != null) {
@@ -162,7 +175,7 @@ public class GrapeGameCore : MonoBehaviour {
     #region  -> FixedUpdate
 
     private void FixedUpdate() {
-        if (!gamePlaying) { return; }
+        if (!gamePlaying || fruitTouchedLimitTrigger) { return; }
         ExecuteAllCombineApplies();
     }
 
@@ -214,11 +227,12 @@ public class GrapeGameCore : MonoBehaviour {
                         //水果並不是單純消失
                         //在這兩個水果的位置中間生成一個下一階的水果
                         Vector3 nextFruitPos = (pair.fruit1.transform.position + pair.fruit2.transform.position) / 2;
-                        SpawnFruit(
+                        FruitObject newFruit = SpawnFruit(
                             type: nextPhaseFruitType,
                             parent: trans_FruitContainer,
                             worldPosition: nextFruitPos
                         );
+                        newFruit.SetEnablePhysics(true);
                     }
                     //移除這兩個水果
                     DisposeFruit(pair.fruit1);
@@ -279,6 +293,8 @@ public class GrapeGameCore : MonoBehaviour {
         var newFruit = fruitFactory.SpawnFruit(type);
         newFruit.transform.SetParent(parent: parent, worldPositionStays: true);
         newFruit.transform.position = worldPosition;
+        newFruit.ClearTouchedInfo();
+        newFruit.SetSpriteColor(Color.white);
         fruitsInScene.Add(newFruit);
         Quaternion newRotation;
         switch (type) {
@@ -314,6 +330,29 @@ public class GrapeGameCore : MonoBehaviour {
     }
 
     #endregion
+    #region 水果觸碰天花板相關
+
+    /// <summary>
+    /// 當水果觸碰到天花板時
+    /// </summary>
+    private async void OnTrigger_StackLimit() {
+        if (gamePlaying && !fruitTouchedLimitTrigger) {
+            //只有在遊戲還正在進行中、以及還沒碰到天花板時才處理
+            fruitTouchedLimitTrigger = true;
+            //遊戲結束表現
+            for (int i = 0; i < fruitsInScene.Count; i++) {
+                fruitsInScene[i].SetEnablePhysics(false);
+            }
+            ScreenCapture.CaptureScreenshot("GrapeGame.png");
+            for (int i = 0; i < fruitsInScene.Count; i++) {
+                fruitsInScene[i].SetSpriteColor(Color.gray);
+                await Task.Delay(50);
+            }
+            await Task.Delay(700);
+        }
+    }
+
+    #endregion
     #region Task-刷新下一個水果
 
     /// <summary>
@@ -343,6 +382,7 @@ public class GrapeGameCore : MonoBehaviour {
     public void ResetGame() {
         //關閉遊戲狀態
         gamePlaying = false;
+        fruitTouchedLimitTrigger = false;
         //清除所有水果
         DisposeAllFruit();
         //清除目前分數
@@ -360,6 +400,7 @@ public class GrapeGameCore : MonoBehaviour {
     public void StartGame() {
         //開啟遊戲狀態
         gamePlaying = true;
+        fruitTouchedLimitTrigger = false;
         //生成一顆水果在重生點
         FruitType spawnpointFruitType = NewRandomFruitType();
         fruitOnSpawnpointCursor = SpawnFruit(

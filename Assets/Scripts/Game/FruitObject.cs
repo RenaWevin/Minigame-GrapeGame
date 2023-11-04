@@ -1,5 +1,4 @@
 ﻿
-using System.Collections.Generic;
 using UnityEngine;
 
 public class FruitObject : MonoBehaviour {
@@ -17,6 +16,11 @@ public class FruitObject : MonoBehaviour {
     /// </summary>
     public FruitType FruitType { get { return m_fruitType; } }
 
+    /// <summary>
+    /// 已經接觸過其他水果了
+    /// </summary>
+    public bool isTouchedAnotherFruit { get; private set; } = false;
+
     #endregion
     #region Inspector資源區
 
@@ -28,6 +32,16 @@ public class FruitObject : MonoBehaviour {
 
     [SerializeField]
     private Rigidbody2D myRigidbody2D;
+
+    #endregion
+    #region 外部方法-清除此水果接觸資訊
+
+    /// <summary>
+    /// 清除此水果接觸資訊，用於生成水果時恢復成出廠狀態
+    /// </summary>
+    public void ClearTouchedInfo() {
+        isTouchedAnotherFruit = false;
+    }
 
     #endregion
     #region 外部方法-檢查自己與另一個水果是否可以結合 
@@ -68,6 +82,17 @@ public class FruitObject : MonoBehaviour {
     }
 
     #endregion
+    #region 外部方法-設定顏色
+
+    /// <summary>
+    /// 設定顏色
+    /// </summary>
+    /// <param name="color"></param>
+    public void SetSpriteColor(Color color) {
+        mySpriteRenderer.color = color;
+    }
+
+    #endregion
     #region 擴展方法-取得兩個水果中屬於正常水果範圍的ID
 
     /// <summary>
@@ -90,16 +115,20 @@ public class FruitObject : MonoBehaviour {
     }
 
     #endregion
+    #region 碰撞箱碰撞事件
 
     private void OnCollisionEnter2D(Collision2D collision) {
         //檢查水果種類
         FruitObject otherComponent = collision.gameObject.GetComponent<FruitObject>();
         if (otherComponent != null) {
+            isTouchedAnotherFruit = true;
             if (this.FruitType == otherComponent.FruitType) {
                 //同種水果，向遊戲核心申請結合
                 Core.Instance.grapeGameCore.ApplyForFruitCombine(this, otherComponent);
             }
         }
     }
+
+    #endregion
 
 }
