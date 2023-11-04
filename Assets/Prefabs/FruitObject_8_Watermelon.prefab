@@ -9,7 +9,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1594017709356308484, guid: 5ee978df8fb0a684b99f0f8ede4fdb10, type: 3}
       propertyPath: m_Name
-      value: FruitObject_6_Watermelon
+      value: FruitObject_8_Watermelon
       objectReference: {fileID: 0}
     - target: {fileID: 1594017709356308490, guid: 5ee978df8fb0a684b99f0f8ede4fdb10, type: 3}
       propertyPath: m_RootOrder
@@ -17,15 +17,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1594017709356308490, guid: 5ee978df8fb0a684b99f0f8ede4fdb10, type: 3}
       propertyPath: m_LocalScale.x
-      value: 2.4
+      value: 2.6
       objectReference: {fileID: 0}
     - target: {fileID: 1594017709356308490, guid: 5ee978df8fb0a684b99f0f8ede4fdb10, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2.4
+      value: 2.6
       objectReference: {fileID: 0}
     - target: {fileID: 1594017709356308490, guid: 5ee978df8fb0a684b99f0f8ede4fdb10, type: 3}
       propertyPath: m_LocalScale.z
-      value: 2.4
+      value: 2.6
       objectReference: {fileID: 0}
     - target: {fileID: 1594017709356308490, guid: 5ee978df8fb0a684b99f0f8ede4fdb10, type: 3}
       propertyPath: m_LocalPosition.x
