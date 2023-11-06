@@ -307,6 +307,9 @@ public class GrapeGameCore : MonoBehaviour {
                 break;
         }
         newFruit.transform.rotation = newRotation;
+        FruitSpriteType fruitSpriteType = PlayerPrefHelper.GetSetting_FruitSpriteType();
+        Sprite newSprite = fruitFactory.GetFruitSprite(fruitSpriteType, type);
+        newFruit.SetSprite(newSprite);
         return newFruit;
     }
 
@@ -440,7 +443,7 @@ public class GrapeGameCore : MonoBehaviour {
     /// </summary>
     private void UpdateDisplay_FruitEvolutionList() {
         bool show_HealingLuka_Uhhuh = false; //★之後還要從遊戲存檔讀取現在能不能顯示
-        FruitSpriteType fruitSpriteType = FruitSpriteType.TofuSkin; //★之後還要從遊戲存檔讀取現在是選哪一個
+        FruitSpriteType fruitSpriteType = PlayerPrefHelper.GetSetting_FruitSpriteType(); //從遊戲存檔讀取現在是選哪一個
         for (int i = 0; i < fruitEvolutionListObjects.Count; i++) {
             var obj = fruitEvolutionListObjects[i];
             var fruitType = obj.fruitType;
