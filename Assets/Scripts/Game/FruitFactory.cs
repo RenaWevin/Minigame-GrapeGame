@@ -17,20 +17,21 @@ public class FruitFactory : MonoBehaviour {
     private List<FruitObject> fruitPrefab_OriginalList = new List<FruitObject>();
 
     #endregion
-    #region  -> 水果圖片參照
+    #region  -> 水果圖片與名稱參照
 
     //結構
     [Serializable]
     private struct FruitTypeSpritePair {
         public FruitType fruitType;
         public Sprite sprite;
+        public string name;
     }
 
-    [Header("水果圖片參照-普通版")]
+    [Header("水果圖片與名稱參照-普通版")]
     [SerializeField]
     private List<FruitTypeSpritePair> fruitSprite_Normal_List = new List<FruitTypeSpritePair>();
     
-    [Header("水果圖片參照-豆皮版")]
+    [Header("水果圖片與名稱參照-豆皮版")]
     [SerializeField]
     private List<FruitTypeSpritePair> fruitSprite_TofuSkin_List = new List<FruitTypeSpritePair>();
 
@@ -60,6 +61,11 @@ public class FruitFactory : MonoBehaviour {
     /// 水果的圖片參照
     /// </summary>
     private readonly MultiDictionary<FruitSpriteType, FruitType, Sprite> fruitSprite_Dict = new MultiDictionary<FruitSpriteType, FruitType, Sprite>();
+    
+    /// <summary>
+    /// 水果的名稱參照
+    /// </summary>
+    private readonly MultiDictionary<FruitSpriteType, FruitType, string> fruitName_Dict = new MultiDictionary<FruitSpriteType, FruitType, string>();
 
     #endregion
 
@@ -87,13 +93,16 @@ public class FruitFactory : MonoBehaviour {
             }
             fruitPrefab_OriginalDict.Add(item.FruitType, item);
         }
-        //處理水果圖片來源參照 
+        //處理水果圖片與名稱來源參照 
         fruitSprite_Dict.Clear();
+        fruitName_Dict.Clear();
         for (int i = 0; i < fruitSprite_Normal_List.Count; i++) {
             fruitSprite_Dict.TryAdd(FruitSpriteType.Normal, fruitSprite_Normal_List[i].fruitType, fruitSprite_Normal_List[i].sprite);
+            fruitName_Dict.TryAdd(FruitSpriteType.Normal, fruitSprite_Normal_List[i].fruitType, fruitSprite_Normal_List[i].name);
         }
         for (int i = 0; i < fruitSprite_TofuSkin_List.Count; i++) {
             fruitSprite_Dict.TryAdd(FruitSpriteType.TofuSkin, fruitSprite_TofuSkin_List[i].fruitType, fruitSprite_TofuSkin_List[i].sprite);
+            fruitName_Dict.TryAdd(FruitSpriteType.TofuSkin, fruitSprite_TofuSkin_List[i].fruitType, fruitSprite_TofuSkin_List[i].name);
         }
         //水果物件池初始化
         objPool_Fruits.Clear();
@@ -169,7 +178,25 @@ public class FruitFactory : MonoBehaviour {
     /// <param name="fruitType"></param>
     /// <returns></returns>
     public Sprite GetFruitSprite(FruitSpriteType fruitSpriteType, FruitType fruitType) {
-        fruitSprite_Dict.TryGetValue(fruitSpriteType, fruitType, out Sprite output);
+        if (!fruitSprite_Dict.TryGetValue(fruitSpriteType, fruitType, out Sprite output)) {
+            Log.Error($"取得水果圖片失敗：指定的key沒有值 {fruitSpriteType}, {fruitType}");
+        }
+        return output;
+    }
+
+    #endregion
+    #region 外部-取得水果名字
+
+    /// <summary>
+    /// 取得水果名字
+    /// </summary>
+    /// <param name="fruitSpriteType"></param>
+    /// <param name="fruitType"></param>
+    /// <returns></returns>
+    public string GetFruitName(FruitSpriteType fruitSpriteType, FruitType fruitType) {
+        if (!fruitName_Dict.TryGetValue(fruitSpriteType, fruitType, out string output)) {
+            Log.Error($"取得水果名字失敗：指定的key沒有值 {fruitSpriteType}, {fruitType}");
+        }
         return output;
     }
 
