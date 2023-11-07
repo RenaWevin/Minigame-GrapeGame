@@ -8021,22 +8021,22 @@ MonoBehaviour:
     name: "\u55AE\u9846\u8461\u8404"
   - fruitType: 3
     sprite: {fileID: 21300000, guid: d4b9ee35ec7ce9d4ea2e7bcc651e8c78, type: 3}
-    name: 
+    name: "\u516D\u865F\u5E6B\u5E6B\u4E3B_\u81E7\u5C0F\u80D6"
   - fruitType: 4
     sprite: {fileID: 21300000, guid: 37fefa2d2cd64fe4e96740a22505c433, type: 3}
-    name: 
+    name: "\u860B\u679C\u5F48\u5857\u9B5A"
   - fruitType: 5
     sprite: {fileID: 21300000, guid: 129f2f8e8ebb4924a9f17da7196ffaeb, type: 3}
-    name: 
+    name: "\u9CF3\u68A8U"
   - fruitType: 6
     sprite: {fileID: 21300000, guid: 35f5e6ce8cff596419779109e9360a2b, type: 3}
-    name: 
+    name: "\u6770\u6977jack"
   - fruitType: 7
     sprite: {fileID: 21300000, guid: e73b17bb07d1a354a944f3ad16bd1770, type: 3}
-    name: 
+    name: Wei-Zhi
   - fruitType: 8
     sprite: {fileID: 21300000, guid: f97a19c925badcd4fbb6ad31e0046207, type: 3}
-    name: 
+    name: "\u897F\u74DC\u963F\u512ARyu"
   - fruitType: 9
     sprite: {fileID: 21300000, guid: a49275626c4a76649b222e7a152e33cb, type: 3}
     name: 9
