@@ -25,6 +25,11 @@ public class Core : MonoBehaviour {
     [SerializeField]
     public OptionsPage optionsPage;
 
+    [Space]
+
+    [SerializeField]
+    public AudioComponent audioComponent;
+
     #endregion
 
     private void Awake() {
