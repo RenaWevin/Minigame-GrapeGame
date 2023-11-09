@@ -131,46 +131,15 @@ public class GrapeGameCore : MonoBehaviour {
 
     void Update() {
         if (!gamePlaying || fruitTouchedLimitTrigger) { return; }
-        if (Input.GetKeyDown(KeyCode.S)) {
-            //允許重生點水果物理、處理下一個水果
-            if (fruitOnSpawnpointCursor != null) {
-                fruitOnSpawnpointCursor?.SetEnablePhysics(true);
-                fruitOnSpawnpointCursor?.transform.SetParent(trans_FruitContainer, worldPositionStays: true);
-                fruitOnSpawnpointCursor = null;
-                CoroutineNextFruit();
-            }
 
-            //int typeId = Random.Range((int)FruitType.Grape, (int)FruitType.HealingLuka_Uhhuh);
-            //var newFruit = fruitFactory.SpawnFruit((FruitType)typeId);
-            //newFruit.transform.SetParent(parent: trans_FruitContainer, worldPositionStays: true);
-            //newFruit.transform.position = spawnPoint.position;
-            //newFruit.gameObject.name += System.DateTime.Now.Second.ToString();
-            //fruitsInScene.Add(newFruit);
-            //SpawnFruit(
-            //    type: (FruitType)typeId,
-            //    parent: trans_FruitContainer,
-            //    worldPosition: spawnPoint.position
-            //);
-        }
+        UpdateCheckPlayerInput();
+
         if (Input.GetKeyDown(KeyCode.Equals)) {
             //刪除水果
             if (fruitsInScene.Count > 0) {
                 var toDispose = fruitsInScene[0];
                 DisposeFruit(toDispose);
             }
-        }
-
-        if (Input.GetKey(KeyCode.LeftArrow)) {
-            float newX = spawnPoint.position.x;
-            newX -= (Time.deltaTime * moveSpeed);
-            newX = Mathf.Max(newX, Trans_LeftBound.position.x);
-            spawnPoint.position = new Vector3(newX, spawnPointOriginal.y, spawnPointOriginal.z);
-        }
-        if (Input.GetKey(KeyCode.RightArrow)) {
-            float newX = spawnPoint.position.x;
-            newX += (Time.deltaTime * moveSpeed);
-            newX = Mathf.Min(newX, Trans_RightBound.position.x);
-            spawnPoint.position = new Vector3(newX, spawnPointOriginal.y, spawnPointOriginal.z);
         }
     }
 
@@ -436,6 +405,41 @@ public class GrapeGameCore : MonoBehaviour {
         gamePlaying = false;
         //清除所有水果
         DisposeAllFruit();
+    }
+
+    #endregion
+    #region 遊戲使用者操作邏輯-按鍵輸入
+
+    /// <summary>
+    /// 遊戲使用者操作邏輯-按鍵輸入
+    /// </summary>
+    private void UpdateCheckPlayerInput() {
+        if (!gamePlaying || fruitTouchedLimitTrigger) { return; }
+
+        //允許重生點水果物理、處理下一個水果
+        if (Input.GetKeyDown(KeyCode.S)) {
+            if (fruitOnSpawnpointCursor != null) {
+                fruitOnSpawnpointCursor?.SetEnablePhysics(true);
+                fruitOnSpawnpointCursor?.transform.SetParent(trans_FruitContainer, worldPositionStays: true);
+                fruitOnSpawnpointCursor = null;
+                CoroutineNextFruit();
+            }
+        }
+        //移動重生點游標
+        //左
+        if (Input.GetKey(KeyCode.LeftArrow)) {
+            float newX = spawnPoint.position.x;
+            newX -= (Time.deltaTime * moveSpeed);
+            newX = Mathf.Max(newX, Trans_LeftBound.position.x);
+            spawnPoint.position = new Vector3(newX, spawnPointOriginal.y, spawnPointOriginal.z);
+        }
+        //右
+        if (Input.GetKey(KeyCode.RightArrow)) {
+            float newX = spawnPoint.position.x;
+            newX += (Time.deltaTime * moveSpeed);
+            newX = Mathf.Min(newX, Trans_RightBound.position.x);
+            spawnPoint.position = new Vector3(newX, spawnPointOriginal.y, spawnPointOriginal.z);
+        }
     }
 
     #endregion
