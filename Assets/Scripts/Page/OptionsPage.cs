@@ -30,6 +30,7 @@ public class OptionsPage : MonoBehaviour {
     #region  -> 切換頁籤與頁籤本體
 
     [Space]
+    [Header("切換頁籤與頁籤本體")]
 
     [SerializeField]
     private Button ButtonPage_Settings;
@@ -41,10 +42,21 @@ public class OptionsPage : MonoBehaviour {
     [SerializeField]
     private ScrollRect ScrollRect_Staff;
 
+    [SerializeField]
+    private Color color_PageImageColor_On;
+    [SerializeField]
+    private Color color_PageImageColor_Off;
+
+    //取得頁籤顏色
+    private Color GetPageImageColor(bool on) {
+        return on ? color_PageImageColor_On : color_PageImageColor_Off;
+    }
+
     #endregion
     #region  -> 設定頁面
 
     [Space]
+    [Header("設定頁面")]
 
     //音樂設定
     [SerializeField]
@@ -66,23 +78,44 @@ public class OptionsPage : MonoBehaviour {
     [SerializeField]
     private Dropdown Dropdown_FruitSpriteType;
 
+    //按鍵設定
+    [SerializeField]
+    private KeybindUIObject KeybindUIObject_MoveLeft;
+    [SerializeField]
+    private KeybindUIObject KeybindUIObject_MoveRight;
+    [SerializeField]
+    private KeybindUIObject KeybindUIObject_PutFruit;
+
+    #endregion
+    #region  -> 按鍵設定頁面
+
+    [Space]
+    [Header("按鍵設定頁面")]
+
+    [SerializeField]
+    private CanvasGroup CanvasGroup_KeyReceiveWindow;
+
+    [SerializeField]
+    private Text Text_KeyReceiveWindowTitle;
+
+    [SerializeField]
+    private string string_KeyReceiveWindowTitleTextFormat;
+
     #endregion
 
     #endregion
     #region 參數參考區
 
-    [SerializeField]
-    private Color color_PageImageColor_On;
-    [SerializeField]
-    private Color color_PageImageColor_Off;
-    
-    //取得頁籤顏色
-    private Color GetPageImageColor(bool on) {
-        return on ? color_PageImageColor_On : color_PageImageColor_Off;
-    }
-
     //水果圖片種類下拉選單選項對應
     private readonly List<FruitSpriteType> fruitSpriteType_DropdownOptions = new List<FruitSpriteType>();
+
+    #region  -> 電腦版-按鍵設定參數
+
+    private KeyCode keycode_MoveLeft = KeyCode.LeftArrow;
+    private KeyCode keycode_MoveRight = KeyCode.RightArrow;
+    private KeyCode keycode_PutFruit = KeyCode.Space;
+
+    #endregion
 
     #endregion
     #region Awake
@@ -122,6 +155,11 @@ public class OptionsPage : MonoBehaviour {
         Dropdown_FruitSpriteType.AddOptions(fruitSpriteTypeStrings);
 
         #endregion
+        #region  -> 按鈕設定頁面
+
+        CanvasGroup_KeyReceiveWindow.SetEnable(false);
+
+        #endregion
 
     }
 
@@ -142,6 +180,10 @@ public class OptionsPage : MonoBehaviour {
         //水果圖片種類下拉選單
         FruitSpriteType fruitSpriteType = fruitSpriteType_DropdownOptions[Dropdown_FruitSpriteType.value];
         PlayerPrefHelper.SetSetting_FruitSpriteType(fruitSpriteType);
+        //儲存按鍵設定
+        PlayerPrefHelper.SetSetting_Keybind_MoveLeft(keycode_MoveLeft);
+        PlayerPrefHelper.SetSetting_Keybind_MoveRight(keycode_MoveRight);
+        PlayerPrefHelper.SetSetting_Keybind_PutFruit(keycode_PutFruit);
     }
 
     #endregion
@@ -218,6 +260,11 @@ public class OptionsPage : MonoBehaviour {
         FruitSpriteType saved_FruitSpriteType = PlayerPrefHelper.GetSetting_FruitSpriteType();
         int fruitSpriteTypeIndex = fruitSpriteType_DropdownOptions.FindIndex((f) => f == saved_FruitSpriteType);
         Dropdown_FruitSpriteType.value = fruitSpriteTypeIndex;
+        //電腦版-按鍵設定
+        keycode_MoveLeft = PlayerPrefHelper.GetSetting_Keybind_MoveLeft();
+        keycode_MoveRight = PlayerPrefHelper.GetSetting_Keybind_MoveRight();
+        keycode_PutFruit = PlayerPrefHelper.GetSetting_Keybind_PutFruit();
+
     }
 
     #endregion

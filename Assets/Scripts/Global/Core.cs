@@ -30,6 +30,9 @@ public class Core : MonoBehaviour {
     [SerializeField]
     public AudioComponent audioComponent;
 
+    [SerializeField]
+    public KeyCodeNameComponent keyCodeNameComponent;
+
     #endregion
 
     private void Awake() {
