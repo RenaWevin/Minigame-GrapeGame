@@ -13,6 +13,15 @@ public static class PlayerPrefHelper {
     private const string KeyPart_Volume_SoundFX = "Volume_SoundFX";
     private const string KeyPart_FruitSpriteType = nameof(FruitSpriteType);
 
+    #region  -> 電腦版設定key
+
+    //按鍵設定
+    private const string KeyPart_Keybind_MoveLeft = "Keybind_MoveLeft";
+    private const string KeyPart_Keybind_MoveRight = "Keybind_MoveRight";
+    private const string KeyPart_Keybind_PutFruit = "Keybind_PutFruit";
+
+    #endregion
+
     #endregion
     #region 平台通用設定
 
@@ -137,7 +146,72 @@ public static class PlayerPrefHelper {
     #endregion
     #region 電腦版專用設定
 
-    #region  -> 按鍵設定★
+    #region  -> 按鍵設定
+
+    #region  --> 向左移動
+
+    /// <summary>
+    /// 取得設定-按鍵綁定-向左移動
+    /// </summary>
+    /// <returns></returns>
+    public static KeyCode GetSetting_Keybind_MoveLeft() {
+        int output = PlayerPrefs.GetInt(string.Format(PrefKeyFormat_Setting, KeyPart_Keybind_MoveLeft), (int)KeyCode.LeftArrow);
+        return (KeyCode)output;
+    }
+
+    /// <summary>
+    /// 儲存設定-按鍵綁定-向左移動
+    /// </summary>
+    /// <returns></returns>
+    public static void SetSetting_Keybind_MoveLeft(KeyCode keyCode) {
+        PlayerPrefs.SetInt(string.Format(PrefKeyFormat_Setting, KeyPart_Keybind_MoveLeft), (int)keyCode);
+        PlayerPrefs.Save();
+    }
+
+    #endregion
+    #region  --> 向右移動
+
+    /// <summary>
+    /// 取得設定-按鍵綁定-向右移動
+    /// </summary>
+    /// <returns></returns>
+    public static KeyCode GetSetting_Keybind_MoveRight() {
+        int output = PlayerPrefs.GetInt(string.Format(PrefKeyFormat_Setting, KeyPart_Keybind_MoveRight), (int)KeyCode.RightArrow);
+        return (KeyCode)output;
+    }
+
+    /// <summary>
+    /// 儲存設定-按鍵綁定-向右移動
+    /// </summary>
+    /// <returns></returns>
+    public static void SetSetting_Keybind_MoveRight(KeyCode keyCode) {
+        PlayerPrefs.SetInt(string.Format(PrefKeyFormat_Setting, KeyPart_Keybind_MoveRight), (int)keyCode);
+        PlayerPrefs.Save();
+    }
+
+    #endregion
+    #region  --> 放下水果
+
+    /// <summary>
+    /// 取得設定-按鍵綁定-放下水果
+    /// </summary>
+    /// <returns></returns>
+    public static KeyCode GetSetting_Keybind_PutFruit() {
+        int output = PlayerPrefs.GetInt(string.Format(PrefKeyFormat_Setting, KeyPart_Keybind_PutFruit), (int)KeyCode.Space);
+        return (KeyCode)output;
+    }
+
+    /// <summary>
+    /// 儲存設定-按鍵綁定-放下水果
+    /// </summary>
+    /// <returns></returns>
+    public static void SetSetting_Keybind_PutFruit(KeyCode keyCode) {
+        PlayerPrefs.SetInt(string.Format(PrefKeyFormat_Setting, KeyPart_Keybind_PutFruit), (int)keyCode);
+        PlayerPrefs.Save();
+    }
+
+    #endregion
+
     #endregion
     #region  -> 解析度★
     #endregion
