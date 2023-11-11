@@ -31,6 +31,8 @@ public class AnykeyReceiver : MonoBehaviour {
         supportKeys.Add(KeyCode.Space);
         //Enter
         supportKeys.Add(KeyCode.Return);
+        //Esc
+        supportKeys.Add(KeyCode.Escape);
     }
 
     void Update() {
