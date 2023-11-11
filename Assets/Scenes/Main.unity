@@ -3827,6 +3827,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Button_StopGame
       objectReference: {fileID: 0}
+    - target: {fileID: 4103058896867467783, guid: b20b99e727c44cd449916e817ccf677c, type: 3}
+      propertyPath: m_Navigation.m_Mode
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b20b99e727c44cd449916e817ccf677c, type: 3}
 --- !u!224 &762506843 stripped
