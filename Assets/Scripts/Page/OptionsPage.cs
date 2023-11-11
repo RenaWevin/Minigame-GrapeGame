@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -101,6 +102,9 @@ public class OptionsPage : MonoBehaviour {
     [SerializeField]
     private string string_KeyReceiveWindowTitleTextFormat;
 
+    [SerializeField]
+    private AnykeyReceiver anykeyReceiver;
+
     #endregion
 
     #endregion
@@ -111,9 +115,9 @@ public class OptionsPage : MonoBehaviour {
 
     #region  -> 電腦版-按鍵設定參數
 
-    private KeyCode keycode_MoveLeft = KeyCode.LeftArrow;
-    private KeyCode keycode_MoveRight = KeyCode.RightArrow;
-    private KeyCode keycode_PutFruit = KeyCode.Space;
+    public KeyCode keycode_MoveLeft { private set; get; } = KeyCode.LeftArrow;
+    public KeyCode keycode_MoveRight { private set; get; } = KeyCode.RightArrow;
+    public KeyCode keycode_PutFruit { private set; get; } = KeyCode.Space;
 
     #endregion
 
@@ -155,9 +159,42 @@ public class OptionsPage : MonoBehaviour {
         Dropdown_FruitSpriteType.AddOptions(fruitSpriteTypeStrings);
 
         #endregion
+        #region  -> 初始化按鍵設定列表
+
+        KeybindUIObject_MoveLeft.onClick.RemoveAllListeners();
+        KeybindUIObject_MoveLeft.onClick.AddListener(delegate {
+            OnClick_KeybindUIObject_OpenAnyKeyReceiverWindow(
+                KeybindUIObject_MoveLeft.GetNameOfKeyBind(),
+                (key) => {
+                    keycode_MoveLeft = key;
+                }
+            );
+        });
+        KeybindUIObject_MoveRight.onClick.RemoveAllListeners();
+        KeybindUIObject_MoveRight.onClick.AddListener(delegate {
+            OnClick_KeybindUIObject_OpenAnyKeyReceiverWindow(
+                KeybindUIObject_MoveRight.GetNameOfKeyBind(),
+                (key) => {
+                    keycode_MoveRight = key;
+                }
+            );
+        });
+        KeybindUIObject_PutFruit.onClick.RemoveAllListeners();
+        KeybindUIObject_PutFruit.onClick.AddListener(delegate {
+            OnClick_KeybindUIObject_OpenAnyKeyReceiverWindow(
+                KeybindUIObject_PutFruit.GetNameOfKeyBind(),
+                (key) => {
+                    keycode_PutFruit = key;
+                }
+            );
+        });
+
+        #endregion
         #region  -> 按鈕設定頁面
 
         CanvasGroup_KeyReceiveWindow.SetEnable(false);
+        anykeyReceiver.onKeyDown.RemoveAllListeners();
+        anykeyReceiver.enabled = false;
 
         #endregion
 
@@ -264,7 +301,7 @@ public class OptionsPage : MonoBehaviour {
         keycode_MoveLeft = PlayerPrefHelper.GetSetting_Keybind_MoveLeft();
         keycode_MoveRight = PlayerPrefHelper.GetSetting_Keybind_MoveRight();
         keycode_PutFruit = PlayerPrefHelper.GetSetting_Keybind_PutFruit();
-
+        UpdateDisplay_KeybindingList();
     }
 
     #endregion
@@ -301,6 +338,48 @@ public class OptionsPage : MonoBehaviour {
         Core.Instance.audioComponent.SetSoundFXVolume(valueInt);
         //Core.Instance.audioComponent.PlaySound(); //★
         Text_SoundFXValue.text = valueInt.ToString();
+    }
+
+    #endregion
+    #region  --> 按鍵設定
+
+    /// <summary>
+    /// 按下按鍵設定列表按紐
+    /// </summary>
+    private void OnClick_KeybindUIObject_OpenAnyKeyReceiverWindow(string nameOfKeyBind, Action<KeyCode> act_KeyCode) {
+        Text_KeyReceiveWindowTitle.text = string.Format(string_KeyReceiveWindowTitleTextFormat, nameOfKeyBind);
+        SetEnableAnyKeyReceiverWindow(true);
+        anykeyReceiver.onKeyDown.RemoveAllListeners();
+        anykeyReceiver.onKeyDown.AddListener(OnKeyReceiverKeyDown);
+        void OnKeyReceiverKeyDown(KeyCode key) {
+            SetEnableAnyKeyReceiverWindow(false);
+            if (key != KeyCode.Escape) {
+                act_KeyCode?.Invoke(key);
+            }
+            UpdateDisplay_KeybindingList();
+        }
+    }
+
+    /// <summary>
+    /// 顯示/隱藏按鍵設定頁面
+    /// </summary>
+    /// <param name="isShow"></param>
+    private void SetEnableAnyKeyReceiverWindow(bool isShow) {
+        CanvasGroup_KeyReceiveWindow.SetEnable(isShow);
+        anykeyReceiver.enabled = isShow;
+        if (!isShow) {
+            anykeyReceiver.onKeyDown.RemoveAllListeners();
+        }
+    }
+
+    /// <summary>
+    /// 更新按鍵設定列表的按鍵
+    /// </summary>
+    private void UpdateDisplay_KeybindingList() {
+        var keyCodeNameComponent = Core.Instance.keyCodeNameComponent;
+        KeybindUIObject_MoveLeft.SetKeybindValueText(keyCodeNameComponent.GetKeyCodeName(keycode_MoveLeft));
+        KeybindUIObject_MoveRight.SetKeybindValueText(keyCodeNameComponent.GetKeyCodeName(keycode_MoveRight));
+        KeybindUIObject_PutFruit.SetKeybindValueText(keyCodeNameComponent.GetKeyCodeName(keycode_PutFruit));
     }
 
     #endregion

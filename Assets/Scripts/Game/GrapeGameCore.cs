@@ -416,8 +416,9 @@ public class GrapeGameCore : MonoBehaviour {
     private void UpdateCheckPlayerInput() {
         if (!gamePlaying || fruitTouchedLimitTrigger) { return; }
 
+        OptionsPage optionsPage = Core.Instance.optionsPage;
         //允許重生點水果物理、處理下一個水果
-        if (Input.GetKeyDown(KeyCode.S)) {
+        if (Input.GetKeyDown(optionsPage.keycode_PutFruit)) {
             if (fruitOnSpawnpointCursor != null) {
                 fruitOnSpawnpointCursor?.SetEnablePhysics(true);
                 fruitOnSpawnpointCursor?.transform.SetParent(trans_FruitContainer, worldPositionStays: true);
@@ -427,14 +428,14 @@ public class GrapeGameCore : MonoBehaviour {
         }
         //移動重生點游標
         //左
-        if (Input.GetKey(KeyCode.LeftArrow)) {
+        if (Input.GetKey(optionsPage.keycode_MoveLeft)) {
             float newX = spawnPoint.position.x;
             newX -= (Time.deltaTime * moveSpeed);
             newX = Mathf.Max(newX, Trans_LeftBound.position.x);
             spawnPoint.position = new Vector3(newX, spawnPointOriginal.y, spawnPointOriginal.z);
         }
         //右
-        if (Input.GetKey(KeyCode.RightArrow)) {
+        if (Input.GetKey(optionsPage.keycode_MoveRight)) {
             float newX = spawnPoint.position.x;
             newX += (Time.deltaTime * moveSpeed);
             newX = Mathf.Min(newX, Trans_RightBound.position.x);

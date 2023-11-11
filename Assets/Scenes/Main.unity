@@ -757,9 +757,9 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 143477358}
   m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
+  m_Alpha: 0
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
 --- !u!1001 &170628053
 PrefabInstance:
@@ -5346,9 +5346,9 @@ MonoBehaviour:
     name: "\u4E5D\u5BAE\u683CEnter"
   - keyCode: 32
     name: "\u7A7A\u767D\u9375"
-  - keyCode: 256
+  - keyCode: 13
     name: Enter
-  - keyCode: 256
+  - keyCode: 27
     name: Esc
 --- !u!1 &1054421551
 GameObject:
@@ -9869,9 +9869,9 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1757568473}
   m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
+  m_Alpha: 0
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
 --- !u!114 &1772754643 stripped
 MonoBehaviour:
@@ -9951,6 +9951,7 @@ MonoBehaviour:
   CanvasGroup_KeyReceiveWindow: {fileID: 1757568477}
   Text_KeyReceiveWindowTitle: {fileID: 330910115}
   string_KeyReceiveWindowTitleTextFormat: "\u8ACB\u6309\u4E0B\u8981\u70BA {0} \u8A2D\u5B9A\u7684\u6309\u9375"
+  anykeyReceiver: {fileID: 1689429771}
 --- !u!1 &1782737078
 GameObject:
   m_ObjectHideFlags: 0
