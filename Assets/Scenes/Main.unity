@@ -8645,6 +8645,7 @@ MonoBehaviour:
   - {fileID: 2733623110122272530, guid: b5cf9297cb07ef74e96a293e15fe9f87, type: 3}
   - {fileID: 2733623110122272530, guid: 060ed80d3ff0821418cdc29893747d7b, type: 3}
   - {fileID: 2733623110122272530, guid: 1dba67814e5bd3b43b2c5d86a49e2f8f, type: 3}
+  - {fileID: 2733623110122272530, guid: 91f41b4fe1e58864c8f90392b02a96ab, type: 3}
   fruitSprite_Normal_List:
   - fruitType: 1
     sprite: {fileID: 21300000, guid: a56ca24ba1a6a3140ab2b190afa8cfbd, type: 3}
@@ -8673,6 +8674,9 @@ MonoBehaviour:
   - fruitType: 9
     sprite: {fileID: 21300000, guid: a49275626c4a76649b222e7a152e33cb, type: 3}
     name: 9
+  - fruitType: -270
+    sprite: {fileID: 21300000, guid: b3694a09422ac064da7abe6b7c4b15f7, type: 3}
+    name: "\u611B\u5FC3"
   fruitSprite_TofuSkin_List:
   - fruitType: 1
     sprite: {fileID: 21300000, guid: a56ca24ba1a6a3140ab2b190afa8cfbd, type: 3}
@@ -8701,6 +8705,9 @@ MonoBehaviour:
   - fruitType: 9
     sprite: {fileID: 21300000, guid: a49275626c4a76649b222e7a152e33cb, type: 3}
     name: 9
+  - fruitType: -270
+    sprite: {fileID: 21300000, guid: e8203a1237ba023479594d7d050d4d96, type: 3}
+    name: "\u611B\u5FC3\u72D0\u72D0"
   trans_ObjectPool: {fileID: 1567910164}
 --- !u!1 &1597827813
 GameObject:

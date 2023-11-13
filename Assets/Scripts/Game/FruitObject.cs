@@ -122,8 +122,8 @@ public class FruitObject : MonoBehaviour {
         FruitObject otherComponent = collision.gameObject.GetComponent<FruitObject>();
         if (otherComponent != null) {
             isTouchedAnotherFruit = true;
-            if (this.FruitType == otherComponent.FruitType) {
-                //同種水果，向遊戲核心申請結合
+            if (this.CanCombineWith(otherComponent)) {
+                //發現與對方可以結合，向遊戲核心申請結合
                 Core.Instance.grapeGameCore.ApplyForFruitCombine(this, otherComponent);
             }
         }
