@@ -193,7 +193,9 @@ public class GrapeGameCore : MonoBehaviour {
                     appliedCombinedFruits.Add(pair.fruit2);
                     //檢查下一階水果
                     int nextPhaseFruitId = (int)FruitObject.GetNormalTypeFromObjects(pair.fruit1, pair.fruit2);
-                    nextPhaseFruitId += 1;
+                    if (nextPhaseFruitId != (int)FruitType.Disappear) {
+                        nextPhaseFruitId += 1;
+                    }
                     FruitType nextPhaseFruitType = (FruitType)nextPhaseFruitId;
                     if (nextPhaseFruitType != FruitType.Disappear) {
                         //水果並不是單純消失

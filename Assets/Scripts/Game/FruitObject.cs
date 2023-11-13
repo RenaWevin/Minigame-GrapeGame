@@ -110,6 +110,10 @@ public class FruitObject : MonoBehaviour {
         if (IsNormalType(obj2)) {
             return obj2.FruitType;
         }
+        if (obj1.FruitType == FruitType.Joker && obj2.FruitType == FruitType.Joker) {
+            //兩者都是Joker，合成後直接消失
+            return FruitType.Disappear;
+        }
         Log.Error($"有兩個水果的類型都不是NormalType: {obj1.name} 與 {obj2.name}");
         return FruitType.Grape;
     }
