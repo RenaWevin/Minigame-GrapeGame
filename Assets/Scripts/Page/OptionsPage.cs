@@ -131,6 +131,11 @@ public class OptionsPage : MonoBehaviour {
     public KeyCode keycode_PutFruit { private set; get; } = KeyCode.Space;
 
     #endregion
+    #region  -> 電腦版-全螢幕設定
+
+    private readonly List<FullScreenMode> fullScreenMode_DropdownOptions = new List<FullScreenMode>();
+
+    #endregion
     #region  -> 電腦版-解析度參數
 
     private struct WidthAndHeight {
@@ -142,7 +147,7 @@ public class OptionsPage : MonoBehaviour {
         public int height;
     }
 
-    private readonly List<WidthAndHeight> resolution_DropdownOptions = new List<WidthAndHeight>();
+    private readonly List<Resolution> resolution_DropdownOptions = new List<Resolution>();
 
     #endregion
 
@@ -187,88 +192,110 @@ public class OptionsPage : MonoBehaviour {
         #region  -> 顯示/隱藏電腦版設定
 
         bool showPCSetting;
-        #if UNITY_STANDALONE
-            showPCSetting = true;
-        #else
+#if UNITY_STANDALONE
+        showPCSetting = true;
+#else
             showPCSetting = false;
-        #endif
+#endif
         Obj_SettingGroup_PC.SetActive(showPCSetting);
 
         #endregion
         #region  -> 初始化按鍵設定列表-電腦版專屬
 
-        #if UNITY_STANDALONE
+#if UNITY_STANDALONE
 
-                KeybindUIObject_MoveLeft.onClick.RemoveAllListeners();
-                KeybindUIObject_MoveLeft.onClick.AddListener(delegate {
-                    OnClick_KeybindUIObject_OpenAnyKeyReceiverWindow(
-                        KeybindUIObject_MoveLeft.GetNameOfKeyBind(),
-                        (key) => {
-                            keycode_MoveLeft = key;
-                        }
-                    );
-                });
-                KeybindUIObject_MoveRight.onClick.RemoveAllListeners();
-                KeybindUIObject_MoveRight.onClick.AddListener(delegate {
-                    OnClick_KeybindUIObject_OpenAnyKeyReceiverWindow(
-                        KeybindUIObject_MoveRight.GetNameOfKeyBind(),
-                        (key) => {
-                            keycode_MoveRight = key;
-                        }
-                    );
-                });
-                KeybindUIObject_PutFruit.onClick.RemoveAllListeners();
-                KeybindUIObject_PutFruit.onClick.AddListener(delegate {
-                    OnClick_KeybindUIObject_OpenAnyKeyReceiverWindow(
-                        KeybindUIObject_PutFruit.GetNameOfKeyBind(),
-                        (key) => {
-                            keycode_PutFruit = key;
-                        }
-                    );
-                });
+        KeybindUIObject_MoveLeft.onClick.RemoveAllListeners();
+        KeybindUIObject_MoveLeft.onClick.AddListener(delegate {
+            OnClick_KeybindUIObject_OpenAnyKeyReceiverWindow(
+                KeybindUIObject_MoveLeft.GetNameOfKeyBind(),
+                (key) => {
+                    keycode_MoveLeft = key;
+                }
+            );
+        });
+        KeybindUIObject_MoveRight.onClick.RemoveAllListeners();
+        KeybindUIObject_MoveRight.onClick.AddListener(delegate {
+            OnClick_KeybindUIObject_OpenAnyKeyReceiverWindow(
+                KeybindUIObject_MoveRight.GetNameOfKeyBind(),
+                (key) => {
+                    keycode_MoveRight = key;
+                }
+            );
+        });
+        KeybindUIObject_PutFruit.onClick.RemoveAllListeners();
+        KeybindUIObject_PutFruit.onClick.AddListener(delegate {
+            OnClick_KeybindUIObject_OpenAnyKeyReceiverWindow(
+                KeybindUIObject_PutFruit.GetNameOfKeyBind(),
+                (key) => {
+                    keycode_PutFruit = key;
+                }
+            );
+        });
 
 #endif
 
         #endregion
         #region  -> 初始化視窗設定與解析度列表-電腦版專屬
 
-        #if UNITY_STANDALONE
+#if UNITY_STANDALONE
 
         Dropdown_WindowType.ClearOptions();
         List<string> windowTypeStrings = new List<string>();
+        fullScreenMode_DropdownOptions.Clear();
         #region  --> 處理選項
         windowTypeStrings.Add("視窗化");
-        windowTypeStrings.Add("無邊框視窗");
+        fullScreenMode_DropdownOptions.Add(FullScreenMode.Windowed);
+        windowTypeStrings.Add("無邊框全螢幕視窗");
+        fullScreenMode_DropdownOptions.Add(FullScreenMode.FullScreenWindow);
+#if UNITY_STANDALONE_WIN
         windowTypeStrings.Add("全螢幕");
+        fullScreenMode_DropdownOptions.Add(FullScreenMode.ExclusiveFullScreen);
+#endif
         #endregion
         Dropdown_WindowType.AddOptions(windowTypeStrings);
+        Dropdown_WindowType.onValueChanged.AddListener(OnValueChanged_Dropdown_WindowType);
 
         Dropdown_Resolution.ClearOptions();
         List<string> resolutionStrings = new List<string>();
         resolution_DropdownOptions.Clear();
         int screenHeight = Screen.currentResolution.height;
         #region  --> 處理選項
-        for (int i = 120; i >= 50; i -= 10) {
-            WidthAndHeight newSize = new WidthAndHeight(16 * i, 9 * i);
-            if (screenHeight >= newSize.height) {
-                resolutionStrings.Add($"{newSize.width} x {newSize.height}");
-                resolution_DropdownOptions.Add(newSize);
+        var supportResolutions = Screen.resolutions;
+        for (int i = supportResolutions.Length - 1; i >= 0; i--) {
+            var newResolution = supportResolutions[i];
+            int checkRatioMultipier = newResolution.width / 16;
+            if (newResolution.height / checkRatioMultipier == 9) {
+                //只有16:9的視窗會被採用
+                resolutionStrings.Add($"{newResolution.width} x {newResolution.height}");
+                resolution_DropdownOptions.Add(newResolution);
             }
         }
+        if (resolution_DropdownOptions.Count <= 0) {
+            resolutionStrings.Add($"{1280} x {720}");
+            resolution_DropdownOptions.Add(new Resolution() {
+                width = 1280,
+                height = 720,
+                refreshRate = 60
+            });
+        }
+        resolutionStrings.Add("規格外");
+        resolution_DropdownOptions.Add(new Resolution() {
+            width = -1,
+            height = -1,
+            refreshRate = -1
+        });
         #endregion
         Dropdown_Resolution.AddOptions(resolutionStrings);
-        //Screen.SetResolution();
-        //Screen.resolutions;
-        //Screen.fullScreenMode
+        Dropdown_Resolution.onValueChanged.AddListener(OnValueChanged_Dropdown_Resolution);
 
-        #endif
+#endif
 
         #endregion
         #region  -> 按鈕設定頁面
 
         CanvasGroup_KeyReceiveWindow.SetEnable(false);
-                anykeyReceiver.onKeyDown.RemoveAllListeners();
-                anykeyReceiver.enabled = false;
+        anykeyReceiver.onKeyDown.RemoveAllListeners();
+        anykeyReceiver.enabled = false;
 
         #endregion
 
@@ -279,23 +306,23 @@ public class OptionsPage : MonoBehaviour {
 
     #region  -> 儲存全部目前選擇的設定
 
-        /// <summary>
-        /// 儲存全部目前選擇的設定
-        /// </summary>
-        private void SaveAllSettings() {
-            //更新音量與啟用
-            PlayerPrefHelper.SetSetting_Enable_BGM(Toggle_BGM.isOn);
-            PlayerPrefHelper.SetSetting_Volume_BGM((int)Slider_BGM.value);
-            PlayerPrefHelper.SetSetting_Enable_SoundFX(Toggle_SoundFX.isOn);
-            PlayerPrefHelper.SetSetting_Volume_SoundFX((int)Slider_SoundFX.value);
-            //水果圖片種類下拉選單
-            FruitSpriteType fruitSpriteType = fruitSpriteType_DropdownOptions[Dropdown_FruitSpriteType.value];
-            PlayerPrefHelper.SetSetting_FruitSpriteType(fruitSpriteType);
-            //儲存按鍵設定
-            PlayerPrefHelper.SetSetting_Keybind_MoveLeft(keycode_MoveLeft);
-            PlayerPrefHelper.SetSetting_Keybind_MoveRight(keycode_MoveRight);
-            PlayerPrefHelper.SetSetting_Keybind_PutFruit(keycode_PutFruit);
-        }
+    /// <summary>
+    /// 儲存全部目前選擇的設定
+    /// </summary>
+    private void SaveAllSettings() {
+        //更新音量與啟用
+        PlayerPrefHelper.SetSetting_Enable_BGM(Toggle_BGM.isOn);
+        PlayerPrefHelper.SetSetting_Volume_BGM((int)Slider_BGM.value);
+        PlayerPrefHelper.SetSetting_Enable_SoundFX(Toggle_SoundFX.isOn);
+        PlayerPrefHelper.SetSetting_Volume_SoundFX((int)Slider_SoundFX.value);
+        //水果圖片種類下拉選單
+        FruitSpriteType fruitSpriteType = fruitSpriteType_DropdownOptions[Dropdown_FruitSpriteType.value];
+        PlayerPrefHelper.SetSetting_FruitSpriteType(fruitSpriteType);
+        //儲存按鍵設定
+        PlayerPrefHelper.SetSetting_Keybind_MoveLeft(keycode_MoveLeft);
+        PlayerPrefHelper.SetSetting_Keybind_MoveRight(keycode_MoveRight);
+        PlayerPrefHelper.SetSetting_Keybind_PutFruit(keycode_PutFruit);
+    }
 
     #endregion
 
@@ -304,157 +331,209 @@ public class OptionsPage : MonoBehaviour {
 
     #region  -> 顯示/關閉視窗
 
-        /// <summary>
-        /// 顯示/關閉視窗
-        /// </summary>
-        /// <param name="show"></param>
-        public void SetShowWindow(bool show) {
-            if (!show) {
-                //儲存全部目前選擇的設定
-                SaveAllSettings();
-            }
-            canvasGroupWindow.SetShowWindow(show);
-            if (show) {
-                //刷新設定畫面設定數值
-                UpdateDisplay_SettingPage();
-                //顯示第一頁
-                SwitchPanel(OptionsPageType.Settings);
-            }
+    /// <summary>
+    /// 顯示/關閉視窗
+    /// </summary>
+    /// <param name="show"></param>
+    public void SetShowWindow(bool show) {
+        if (!show) {
+            //儲存全部目前選擇的設定
+            SaveAllSettings();
         }
+        canvasGroupWindow.SetShowWindow(show);
+        if (show) {
+            //刷新設定畫面設定數值
+            UpdateDisplay_SettingPage();
+            //顯示第一頁
+            SwitchPanel(OptionsPageType.Settings);
+        }
+    }
 
     #endregion
     #region  -> 切換頁面
 
-        /// <summary>
-        /// 切換頁面
-        /// </summary>
-        /// <param name="optionsPageType"></param>
-        private void SwitchPanel(OptionsPageType optionsPageType) {
-            ScrollRect_Settings.verticalNormalizedPosition = 1f;
-            ScrollRect_Staff.verticalNormalizedPosition = 1f;
+    /// <summary>
+    /// 切換頁面
+    /// </summary>
+    /// <param name="optionsPageType"></param>
+    private void SwitchPanel(OptionsPageType optionsPageType) {
+        ScrollRect_Settings.verticalNormalizedPosition = 1f;
+        ScrollRect_Staff.verticalNormalizedPosition = 1f;
 
-            ScrollRect_Settings.gameObject.SetActive(optionsPageType == OptionsPageType.Settings);
-            ScrollRect_Staff.gameObject.SetActive(optionsPageType == OptionsPageType.Staff);
+        ScrollRect_Settings.gameObject.SetActive(optionsPageType == OptionsPageType.Settings);
+        ScrollRect_Staff.gameObject.SetActive(optionsPageType == OptionsPageType.Staff);
 
-            ButtonPage_Settings.targetGraphic.color = GetPageImageColor(optionsPageType == OptionsPageType.Settings);
-            ButtonPage_Staff.targetGraphic.color = GetPageImageColor(optionsPageType == OptionsPageType.Staff);
+        ButtonPage_Settings.targetGraphic.color = GetPageImageColor(optionsPageType == OptionsPageType.Settings);
+        ButtonPage_Staff.targetGraphic.color = GetPageImageColor(optionsPageType == OptionsPageType.Staff);
 
-            switch (optionsPageType) {
-                case OptionsPageType.Settings:
-                    Text_Options.text = "設定頁面";
-                    break;
-                case OptionsPageType.Staff:
-                    Text_Options.text = "製作名單";
-                    break;
-            }
+        switch (optionsPageType) {
+            case OptionsPageType.Settings:
+                Text_Options.text = "設定頁面";
+                break;
+            case OptionsPageType.Staff:
+                Text_Options.text = "製作名單";
+                break;
         }
+    }
 
     #endregion
     #region  -> 設定頁面相關
 
     #region  --> 刷新設定畫面設定數值
 
-        /// <summary>
-        /// 刷新設定畫面設定數值
-        /// </summary>
-        private void UpdateDisplay_SettingPage() {
-            //更新音量與啟用
-            Toggle_BGM.isOn = Slider_BGM.interactable = PlayerPrefHelper.GetSetting_Enable_BGM();
-            int volumeBGM = PlayerPrefHelper.GetSetting_Volume_BGM();
-            Slider_BGM.value = volumeBGM;
-            Text_BGMValue.text = volumeBGM.ToString();
-            Toggle_SoundFX.isOn = Slider_SoundFX.interactable = PlayerPrefHelper.GetSetting_Enable_SoundFX();
-            int volumeSound = PlayerPrefHelper.GetSetting_Volume_SoundFX();
-            Slider_SoundFX.value = volumeSound;
-            Text_SoundFXValue.text = volumeSound.ToString();
-            //更新水果圖片種類下拉選單index
-            FruitSpriteType saved_FruitSpriteType = PlayerPrefHelper.GetSetting_FruitSpriteType();
-            int fruitSpriteTypeIndex = fruitSpriteType_DropdownOptions.FindIndex((f) => f == saved_FruitSpriteType);
-            Dropdown_FruitSpriteType.value = fruitSpriteTypeIndex;
-            //電腦版-按鍵設定
-            keycode_MoveLeft = PlayerPrefHelper.GetSetting_Keybind_MoveLeft();
-            keycode_MoveRight = PlayerPrefHelper.GetSetting_Keybind_MoveRight();
-            keycode_PutFruit = PlayerPrefHelper.GetSetting_Keybind_PutFruit();
-            UpdateDisplay_KeybindingList();
+    /// <summary>
+    /// 刷新設定畫面設定數值
+    /// </summary>
+    private void UpdateDisplay_SettingPage() {
+        //更新音量與啟用
+        Toggle_BGM.isOn = Slider_BGM.interactable = PlayerPrefHelper.GetSetting_Enable_BGM();
+        int volumeBGM = PlayerPrefHelper.GetSetting_Volume_BGM();
+        Slider_BGM.value = volumeBGM;
+        Text_BGMValue.text = volumeBGM.ToString();
+        Toggle_SoundFX.isOn = Slider_SoundFX.interactable = PlayerPrefHelper.GetSetting_Enable_SoundFX();
+        int volumeSound = PlayerPrefHelper.GetSetting_Volume_SoundFX();
+        Slider_SoundFX.value = volumeSound;
+        Text_SoundFXValue.text = volumeSound.ToString();
+        //更新水果圖片種類下拉選單index
+        FruitSpriteType saved_FruitSpriteType = PlayerPrefHelper.GetSetting_FruitSpriteType();
+        int fruitSpriteTypeIndex = fruitSpriteType_DropdownOptions.FindIndex((f) => f == saved_FruitSpriteType);
+        Dropdown_FruitSpriteType.value = fruitSpriteTypeIndex;
+        //電腦版-按鍵設定
+        keycode_MoveLeft = PlayerPrefHelper.GetSetting_Keybind_MoveLeft();
+        keycode_MoveRight = PlayerPrefHelper.GetSetting_Keybind_MoveRight();
+        keycode_PutFruit = PlayerPrefHelper.GetSetting_Keybind_PutFruit();
+        UpdateDisplay_KeybindingList();
+        //電腦版-解析度與全螢幕下拉選單
+        UpdateDisplay_ResolutionAndFullScreenSetting();
+    }
+
+    #endregion
+    #region  --> 根據目前刷新解析度與全螢幕下拉選單
+
+    /// <summary>
+    /// 根據目前刷新解析度與全螢幕下拉選單
+    /// </summary>
+    private void UpdateDisplay_ResolutionAndFullScreenSetting() {
+        int indexWindowType = fullScreenMode_DropdownOptions.FindIndex((f) => f == Screen.fullScreenMode);
+        if (indexWindowType < 0) {
+            indexWindowType = 0;
         }
+        Dropdown_WindowType.SetValueWithoutNotify(indexWindowType);
+        Dropdown_WindowType.captionText.text = Dropdown_WindowType.options[indexWindowType].text;
+
+        int indexResolution = resolution_DropdownOptions.FindIndex((r) => r.width == Screen.width && r.height == Screen.height);
+        if (indexResolution < 0) {
+            indexResolution = resolution_DropdownOptions.Count - 1;
+        }
+        Dropdown_Resolution.SetValueWithoutNotify(indexResolution);
+        Dropdown_Resolution.captionText.text = $"{Screen.width} x {Screen.height}";
+    }
 
     #endregion
 
     #region  --> 切換音樂啟用停用
 
-        private void OnValueChanged_Toggle_BGM(bool isOn) {
-            Core.Instance.audioComponent.SetBGMMute(!isOn);
-            Slider_BGM.interactable = isOn;
-        }
+    private void OnValueChanged_Toggle_BGM(bool isOn) {
+        Core.Instance.audioComponent.SetBGMMute(!isOn);
+        Slider_BGM.interactable = isOn;
+    }
 
     #endregion
     #region  --> 拖曳音樂音量條
 
-        private void OnValueChanged_Slider_BGM(float value) {
-            int valueInt = (int)value;
-            Core.Instance.audioComponent.SetBGMVolume(valueInt);
-            Text_BGMValue.text = valueInt.ToString();
-        }
+    private void OnValueChanged_Slider_BGM(float value) {
+        int valueInt = (int)value;
+        Core.Instance.audioComponent.SetBGMVolume(valueInt);
+        Text_BGMValue.text = valueInt.ToString();
+    }
 
     #endregion
     #region  --> 切換音效啟用停用
 
-        private void OnValueChanged_Toggle_Sound(bool isOn) {
-            Core.Instance.audioComponent.SetSoundMute(!isOn);
-            Slider_SoundFX.interactable = isOn;
-        }
+    private void OnValueChanged_Toggle_Sound(bool isOn) {
+        Core.Instance.audioComponent.SetSoundMute(!isOn);
+        Slider_SoundFX.interactable = isOn;
+    }
 
     #endregion
     #region  --> 拖曳音效音量條
 
-        private void OnValueChanged_Slider_Sound(float value) {
-            int valueInt = (int)value;
-            Core.Instance.audioComponent.SetSoundFXVolume(valueInt);
-            //Core.Instance.audioComponent.PlaySound(); //★
-            Text_SoundFXValue.text = valueInt.ToString();
-        }
+    private void OnValueChanged_Slider_Sound(float value) {
+        int valueInt = (int)value;
+        Core.Instance.audioComponent.SetSoundFXVolume(valueInt);
+        //Core.Instance.audioComponent.PlaySound(); //★
+        Text_SoundFXValue.text = valueInt.ToString();
+    }
 
     #endregion
     #region  --> 按鍵設定
 
-        /// <summary>
-        /// 按下按鍵設定列表按紐
-        /// </summary>
-        private void OnClick_KeybindUIObject_OpenAnyKeyReceiverWindow(string nameOfKeyBind, Action<KeyCode> act_KeyCode) {
-            Text_KeyReceiveWindowTitle.text = string.Format(string_KeyReceiveWindowTitleTextFormat, nameOfKeyBind);
-            SetEnableAnyKeyReceiverWindow(true);
+    /// <summary>
+    /// 按下按鍵設定列表按紐
+    /// </summary>
+    private void OnClick_KeybindUIObject_OpenAnyKeyReceiverWindow(string nameOfKeyBind, Action<KeyCode> act_KeyCode) {
+        Text_KeyReceiveWindowTitle.text = string.Format(string_KeyReceiveWindowTitleTextFormat, nameOfKeyBind);
+        SetEnableAnyKeyReceiverWindow(true);
+        anykeyReceiver.onKeyDown.RemoveAllListeners();
+        anykeyReceiver.onKeyDown.AddListener(OnKeyReceiverKeyDown);
+        void OnKeyReceiverKeyDown(KeyCode key) {
+            SetEnableAnyKeyReceiverWindow(false);
+            if (key != KeyCode.Escape) {
+                act_KeyCode?.Invoke(key);
+            }
+            UpdateDisplay_KeybindingList();
+        }
+    }
+
+    /// <summary>
+    /// 顯示/隱藏按鍵設定頁面
+    /// </summary>
+    /// <param name="isShow"></param>
+    private void SetEnableAnyKeyReceiverWindow(bool isShow) {
+        CanvasGroup_KeyReceiveWindow.SetEnable(isShow);
+        anykeyReceiver.enabled = isShow;
+        if (!isShow) {
             anykeyReceiver.onKeyDown.RemoveAllListeners();
-            anykeyReceiver.onKeyDown.AddListener(OnKeyReceiverKeyDown);
-            void OnKeyReceiverKeyDown(KeyCode key) {
-                SetEnableAnyKeyReceiverWindow(false);
-                if (key != KeyCode.Escape) {
-                    act_KeyCode?.Invoke(key);
-                }
-                UpdateDisplay_KeybindingList();
-            }
         }
+    }
 
-        /// <summary>
-        /// 顯示/隱藏按鍵設定頁面
-        /// </summary>
-        /// <param name="isShow"></param>
-        private void SetEnableAnyKeyReceiverWindow(bool isShow) {
-            CanvasGroup_KeyReceiveWindow.SetEnable(isShow);
-            anykeyReceiver.enabled = isShow;
-            if (!isShow) {
-                anykeyReceiver.onKeyDown.RemoveAllListeners();
-            }
-        }
+    /// <summary>
+    /// 更新按鍵設定列表的按鍵
+    /// </summary>
+    private void UpdateDisplay_KeybindingList() {
+        var keyCodeNameComponent = Core.Instance.keyCodeNameComponent;
+        KeybindUIObject_MoveLeft.SetKeybindValueText(keyCodeNameComponent.GetKeyCodeName(keycode_MoveLeft));
+        KeybindUIObject_MoveRight.SetKeybindValueText(keyCodeNameComponent.GetKeyCodeName(keycode_MoveRight));
+        KeybindUIObject_PutFruit.SetKeybindValueText(keyCodeNameComponent.GetKeyCodeName(keycode_PutFruit));
+    }
 
-        /// <summary>
-        /// 更新按鍵設定列表的按鍵
-        /// </summary>
-        private void UpdateDisplay_KeybindingList() {
-            var keyCodeNameComponent = Core.Instance.keyCodeNameComponent;
-            KeybindUIObject_MoveLeft.SetKeybindValueText(keyCodeNameComponent.GetKeyCodeName(keycode_MoveLeft));
-            KeybindUIObject_MoveRight.SetKeybindValueText(keyCodeNameComponent.GetKeyCodeName(keycode_MoveRight));
-            KeybindUIObject_PutFruit.SetKeybindValueText(keyCodeNameComponent.GetKeyCodeName(keycode_PutFruit));
+    #endregion
+    #region  --> 更改視窗模式
+
+    /// <summary>
+    /// 更改視窗模式
+    /// </summary>
+    /// <param name="value"></param>
+    private void OnValueChanged_Dropdown_WindowType(int value) {
+        FullScreenMode fullScreenMode = fullScreenMode_DropdownOptions[value];
+        Screen.fullScreenMode = fullScreenMode;
+    }
+
+    #endregion
+    #region  --> 更改解析度
+
+    /// <summary>
+    /// 更改解析度(會同時吃到全螢幕模式)
+    /// </summary>
+    /// <param name="value"></param>
+    private void OnValueChanged_Dropdown_Resolution(int value) {
+        Log.Warning(resolution_DropdownOptions[value].ToString());
+        Resolution resolution = resolution_DropdownOptions[value];
+        FullScreenMode fullScreenMode = fullScreenMode_DropdownOptions[Dropdown_WindowType.value];
+        if (resolution.width > 0) {
+            Screen.SetResolution(resolution.width, resolution.height, fullScreenMode, resolution.refreshRate);
         }
+    }
 
     #endregion
 
