@@ -85,7 +85,7 @@ public class AudioComponent : MonoBehaviour {
 
     public void PlayBGM() {
         AudioSource_BGM.mute = !PlayerPrefHelper.GetSetting_Enable_BGM();
-        AudioSource_BGM.volume = PlayerPrefHelper.GetSetting_Volume_BGM();
+        AudioSource_BGM.volume = PlayerPrefHelper.GetSetting_Volume_BGM() * 0.01f;
         AudioSource_BGM.Play();
     }
 
@@ -111,19 +111,25 @@ public class AudioComponent : MonoBehaviour {
     #endregion
     #region 外部方法-播放音效
 
+    /// <summary>
+    /// 指定特定音效播放
+    /// </summary>
+    /// <param name="soundId"></param>
     public void PlaySound(SoundId soundId) {
-        //★
-        if (!PlayerPrefHelper.GetSetting_Enable_SoundFX()) {
+        bool enable_SoundFX = PlayerPrefHelper.GetSetting_Enable_SoundFX();
+        if (!enable_SoundFX) {
             //沒有啟用就不播放
             return;
         }
+        int volumeInt = PlayerPrefHelper.GetSetting_Volume_SoundFX();
+        float volumeFloat = volumeInt * 0.01f;
         soundPrevIndex++;
         if (soundPrevIndex < 0) { soundPrevIndex = 0; }
         if (soundPrevIndex >= AudioSource_SoundFX.Length) { soundPrevIndex = 0; }
         if (audioclipDict.TryGetValue(soundId, out AudioClip audioClip)) {
             AudioSource_SoundFX[soundPrevIndex].clip = audioClip;
-            AudioSource_SoundFX[soundPrevIndex].mute = !PlayerPrefHelper.GetSetting_Enable_SoundFX();
-            AudioSource_SoundFX[soundPrevIndex].volume = PlayerPrefHelper.GetSetting_Volume_SoundFX();
+            AudioSource_SoundFX[soundPrevIndex].mute = !enable_SoundFX;
+            AudioSource_SoundFX[soundPrevIndex].volume = volumeFloat;
             AudioSource_SoundFX[soundPrevIndex].Play();
         } else {
             Log.Error($"SoundId: {soundId} 的音效不存在");
