@@ -1,4 +1,5 @@
 ﻿
+using System.Collections.Generic;
 using UnityEngine;
 
 public class AudioComponent : MonoBehaviour {
@@ -8,6 +9,8 @@ public class AudioComponent : MonoBehaviour {
     //音效上次使用的通道編號
     private int soundPrevIndex = -1;
 
+    private readonly Dictionary<SoundId, AudioClip> audioclipDict = new Dictionary<SoundId, AudioClip>();
+
     #endregion
     #region 音樂音效AudioSource
 
@@ -16,6 +19,51 @@ public class AudioComponent : MonoBehaviour {
 
     [SerializeField]
     private AudioSource[] AudioSource_SoundFX;
+
+    #endregion
+    #region 音效素材(Inspector)
+
+    [Space]
+    [Header("音效素材")]
+
+    [SerializeField]
+    private AudioClip Clip_Click_Normal;
+
+    [SerializeField]
+    private AudioClip Clip_Click_Close;
+
+    [SerializeField]
+    private AudioClip Clip_Click_StartGame;
+
+    [SerializeField]
+    private AudioClip Clip_Result_Win;
+
+    [SerializeField]
+    private AudioClip Clip_Result_Lose;
+
+    [SerializeField]
+    private AudioClip Clip_Fruit_Put;
+
+    [SerializeField]
+    private AudioClip Clip_Fruit_Combine;
+
+    [SerializeField]
+    private AudioClip Clip_Fruit_Gray;
+
+    #endregion
+    #region Awake
+
+    private void Awake() {
+        audioclipDict.Clear();
+        audioclipDict.Add(SoundId.Click_Normal, Clip_Click_Normal);
+        audioclipDict.Add(SoundId.Click_Close, Clip_Click_Close);
+        audioclipDict.Add(SoundId.Click_StartGame, Clip_Click_StartGame);
+        audioclipDict.Add(SoundId.Result_Win, Clip_Result_Win);
+        audioclipDict.Add(SoundId.Result_Lose, Clip_Result_Lose);
+        audioclipDict.Add(SoundId.Fruit_Put, Clip_Fruit_Put);
+        audioclipDict.Add(SoundId.Fruit_Combine, Clip_Fruit_Combine);
+        audioclipDict.Add(SoundId.Fruit_Gray, Clip_Fruit_Gray);
+    }
 
     #endregion
     #region 外部方法-更改音樂音量
@@ -63,7 +111,7 @@ public class AudioComponent : MonoBehaviour {
     #endregion
     #region 外部方法-播放音效
 
-    public void PlaySound(AudioClip audioClip) {
+    public void PlaySound(SoundId soundId) {
         //★
         if (!PlayerPrefHelper.GetSetting_Enable_SoundFX()) {
             //沒有啟用就不播放
@@ -72,10 +120,14 @@ public class AudioComponent : MonoBehaviour {
         soundPrevIndex++;
         if (soundPrevIndex < 0) { soundPrevIndex = 0; }
         if (soundPrevIndex >= AudioSource_SoundFX.Length) { soundPrevIndex = 0; }
-        AudioSource_SoundFX[soundPrevIndex].clip = audioClip;
-        AudioSource_SoundFX[soundPrevIndex].mute = !PlayerPrefHelper.GetSetting_Enable_SoundFX();
-        AudioSource_SoundFX[soundPrevIndex].volume = PlayerPrefHelper.GetSetting_Volume_SoundFX();
-        AudioSource_SoundFX[soundPrevIndex].Play();
+        if (audioclipDict.TryGetValue(soundId, out AudioClip audioClip)) {
+            AudioSource_SoundFX[soundPrevIndex].clip = audioClip;
+            AudioSource_SoundFX[soundPrevIndex].mute = !PlayerPrefHelper.GetSetting_Enable_SoundFX();
+            AudioSource_SoundFX[soundPrevIndex].volume = PlayerPrefHelper.GetSetting_Volume_SoundFX();
+            AudioSource_SoundFX[soundPrevIndex].Play();
+        } else {
+            Log.Error($"SoundId: {soundId} 的音效不存在");
+        }
     }
 
     #endregion

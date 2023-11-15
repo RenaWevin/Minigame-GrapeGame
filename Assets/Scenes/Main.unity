@@ -7092,6 +7092,14 @@ MonoBehaviour:
   - {fileID: 2040935190}
   - {fileID: 936442262}
   - {fileID: 247745309}
+  Clip_Click_Normal: {fileID: 8300000, guid: 46a7502a380808f47960f701dc712ec4, type: 3}
+  Clip_Click_Close: {fileID: 8300000, guid: ae7c79ae85fbfa241a4a93d04dd9d735, type: 3}
+  Clip_Click_StartGame: {fileID: 8300000, guid: 14947fba86d4bd64ea3d831e5794d9cf, type: 3}
+  Clip_Result_Win: {fileID: 8300000, guid: 0754d1651eb167c45bc69d8d962ab227, type: 3}
+  Clip_Result_Lose: {fileID: 8300000, guid: dc9a3ac828c78394f860d1c9f623f03b, type: 3}
+  Clip_Fruit_Put: {fileID: 8300000, guid: b0df9e34803e7ea4cb6b6593301de41a, type: 3}
+  Clip_Fruit_Combine: {fileID: 8300000, guid: df5c9223be7182546846b3247956a46a, type: 3}
+  Clip_Fruit_Gray: {fileID: 8300000, guid: b0df9e34803e7ea4cb6b6593301de41a, type: 3}
 --- !u!1 &1358485495
 GameObject:
   m_ObjectHideFlags: 0
