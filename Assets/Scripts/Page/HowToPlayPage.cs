@@ -17,6 +17,7 @@ public class HowToPlayPage : MonoBehaviour {
 
     private void Awake() {
         Button_Close.onClick.AddListener(delegate {
+            Core.Instance.audioComponent.PlaySound(SoundId.Click_Close);
             SetShowWindow(false);
         });
     }

@@ -211,6 +211,8 @@ public class GrapeGameCore : MonoBehaviour {
                     //移除這兩個水果
                     DisposeFruit(pair.fruit1);
                     DisposeFruit(pair.fruit2);
+                    //播放音效
+                    Core.Instance.audioComponent.PlaySound(SoundId.Fruit_Combine);
                     //執行加分★
                     //(未實作)
                     Log.Info($"合成成功！分數增加 {nextPhaseFruitId}");
@@ -323,6 +325,7 @@ public class GrapeGameCore : MonoBehaviour {
             ScreenCapture.CaptureScreenshot("GrapeGame.png");
             for (int i = 0; i < fruitsInScene.Count; i++) {
                 fruitsInScene[i].SetSpriteColor(Color.gray);
+                Core.Instance.audioComponent.PlaySound(SoundId.Fruit_Gray);
                 await Task.Delay(50);
             }
             await Task.Delay(700);
@@ -422,6 +425,9 @@ public class GrapeGameCore : MonoBehaviour {
         //允許重生點水果物理、處理下一個水果
         if (Input.GetKeyDown(optionsPage.keycode_PutFruit)) {
             if (fruitOnSpawnpointCursor != null) {
+                //音效
+                Core.Instance.audioComponent.PlaySound(SoundId.Fruit_Put);
+                //放水果
                 fruitOnSpawnpointCursor?.SetEnablePhysics(true);
                 fruitOnSpawnpointCursor?.transform.SetParent(trans_FruitContainer, worldPositionStays: true);
                 fruitOnSpawnpointCursor = null;
@@ -486,6 +492,7 @@ public class GrapeGameCore : MonoBehaviour {
     /// 按下離開遊戲按鈕
     /// </summary>
     private void OnClick_Button_StopGame() {
+        Core.Instance.audioComponent.PlaySound(SoundId.Click_Close);
         StopGame();
         SetEnableGamePage(false);
         Core.Instance.titlePage.SetEnableTitlePage(true);

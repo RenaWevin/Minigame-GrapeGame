@@ -157,6 +157,7 @@ public class OptionsPage : MonoBehaviour {
     private void Awake() {
         //關閉視窗事件
         Button_Close.onClick.AddListener(delegate {
+            Core.Instance.audioComponent.PlaySound(SoundId.Click_Close);
             SetShowWindow(false);
         });
         //頁籤

@@ -54,6 +54,7 @@ public class TitlePage : MonoBehaviour {
     /// 按下開始遊戲
     /// </summary>
     public void OnClick_Start() {
+        Core.Instance.audioComponent.PlaySound(SoundId.Click_StartGame);
         SetEnableTitlePage(false);
         var gameCore = Core.Instance.grapeGameCore;
         gameCore.SetEnableGamePage(true);
@@ -65,6 +66,7 @@ public class TitlePage : MonoBehaviour {
     /// 按下遊玩方法
     /// </summary>
     private void OnClick_HowToPlay() {
+        Core.Instance.audioComponent.PlaySound(SoundId.Click_Normal);
         Core.Instance.howToPlayPage.SetShowWindow(true);
     }
 
@@ -72,6 +74,7 @@ public class TitlePage : MonoBehaviour {
     /// 按下高分紀錄
     /// </summary>
     private void OnClick_Leaderboard() {
+        Core.Instance.audioComponent.PlaySound(SoundId.Click_Normal);
         Core.Instance.leaderboardPage.SetShowWindow(true);
     }
 
@@ -79,6 +82,7 @@ public class TitlePage : MonoBehaviour {
     /// 按下設定畫面
     /// </summary>
     private void OnClick_Options() {
+        Core.Instance.audioComponent.PlaySound(SoundId.Click_Normal);
         Core.Instance.optionsPage.SetShowWindow(true);
     }
 
@@ -86,6 +90,7 @@ public class TitlePage : MonoBehaviour {
     /// 按下離開遊戲
     /// </summary>
     public void OnClick_Exit() {
+        Core.Instance.audioComponent.PlaySound(SoundId.Click_Normal);
         Application.Quit();
     }
 
