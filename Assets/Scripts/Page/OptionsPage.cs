@@ -263,20 +263,45 @@ public class OptionsPage : MonoBehaviour {
         var supportResolutions = Screen.resolutions;
         for (int i = supportResolutions.Length - 1; i >= 0; i--) {
             var newResolution = supportResolutions[i];
+            int ratioRemainder = newResolution.width % 16;
+            if (ratioRemainder != 0) {
+                //非整除時屏除
+                continue;
+            }
             int checkRatioMultipier = newResolution.width / 16;
-            if (newResolution.height / checkRatioMultipier == 9) {
-                //只有16:9的視窗會被採用
+            int heightRatio = newResolution.height / checkRatioMultipier;
+            int heightRemainder = newResolution.height % checkRatioMultipier;
+            if (heightRatio == 9 && heightRemainder == 0) {
+                //只有完全16:9的視窗會被採用
+                if (resolution_DropdownOptions.Exists((r) => r.width == newResolution.width && r.height == newResolution.height)) {
+                    //已經重複的解析度要篩選掉，這邊不管FPS
+                    continue;
+                }
                 resolutionStrings.Add($"{newResolution.width} x {newResolution.height}");
                 resolution_DropdownOptions.Add(newResolution);
             }
         }
         if (resolution_DropdownOptions.Count <= 0) {
-            resolutionStrings.Add($"{1280} x {720}");
-            resolution_DropdownOptions.Add(new Resolution() {
+            var newResolution = new Resolution() {
                 width = 1280,
                 height = 720,
                 refreshRate = 60
-            });
+            };
+            resolutionStrings.Add($"{newResolution.width} x {newResolution.height}");
+            resolution_DropdownOptions.Add(newResolution);
+        } else {
+            var lastResolution = resolution_DropdownOptions[resolution_DropdownOptions.Count - 1];
+            int lastMultipier = lastResolution.height / 9;
+            int startMultipier = ((lastMultipier / 10) - 1) * 10;
+            for (int i = startMultipier; i >= 50; i -= 10) {
+                var newResolution = new Resolution() {
+                    width = i * 16,
+                    height = i * 9,
+                    refreshRate = 60
+                };
+                resolutionStrings.Add($"{newResolution.width} x {newResolution.height}");
+                resolution_DropdownOptions.Add(newResolution);
+            }
         }
         resolutionStrings.Add("規格外");
         resolution_DropdownOptions.Add(new Resolution() {
@@ -527,11 +552,11 @@ public class OptionsPage : MonoBehaviour {
     /// </summary>
     /// <param name="value"></param>
     private void OnValueChanged_Dropdown_Resolution(int value) {
-        Log.Warning(resolution_DropdownOptions[value].ToString());
+        //Log.Warning(resolution_DropdownOptions[value].ToString());
         Resolution resolution = resolution_DropdownOptions[value];
         FullScreenMode fullScreenMode = fullScreenMode_DropdownOptions[Dropdown_WindowType.value];
         if (resolution.width > 0) {
-            Screen.SetResolution(resolution.width, resolution.height, fullScreenMode, resolution.refreshRate);
+            Screen.SetResolution(resolution.width, resolution.height, fullScreenMode, 60);
         }
     }
 
