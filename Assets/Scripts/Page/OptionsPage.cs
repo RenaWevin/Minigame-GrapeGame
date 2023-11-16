@@ -124,6 +124,8 @@ public class OptionsPage : MonoBehaviour {
     //水果圖片種類下拉選單選項對應
     private readonly List<FruitSpriteType> fruitSpriteType_DropdownOptions = new List<FruitSpriteType>();
 
+    private float soundSliderDelayTime = 0f;
+
     #region  -> 電腦版-按鍵設定參數
 
     public KeyCode keycode_MoveLeft { private set; get; } = KeyCode.LeftArrow;
@@ -414,11 +416,11 @@ public class OptionsPage : MonoBehaviour {
         //更新音量與啟用
         Toggle_BGM.isOn = Slider_BGM.interactable = PlayerPrefHelper.GetSetting_Enable_BGM();
         int volumeBGM = PlayerPrefHelper.GetSetting_Volume_BGM();
-        Slider_BGM.value = volumeBGM;
+        Slider_BGM.SetValueWithoutNotify(volumeBGM);
         Text_BGMValue.text = volumeBGM.ToString();
         Toggle_SoundFX.isOn = Slider_SoundFX.interactable = PlayerPrefHelper.GetSetting_Enable_SoundFX();
         int volumeSound = PlayerPrefHelper.GetSetting_Volume_SoundFX();
-        Slider_SoundFX.value = volumeSound;
+        Slider_SoundFX.SetValueWithoutNotify(volumeSound);
         Text_SoundFXValue.text = volumeSound.ToString();
         //更新水果圖片種類下拉選單index
         FruitSpriteType saved_FruitSpriteType = PlayerPrefHelper.GetSetting_FruitSpriteType();
@@ -487,7 +489,10 @@ public class OptionsPage : MonoBehaviour {
     private void OnValueChanged_Slider_Sound(float value) {
         int valueInt = (int)value;
         Core.Instance.audioComponent.SetSoundFXVolume(valueInt);
-        //Core.Instance.audioComponent.PlaySound(); //★
+        if (Time.timeSinceLevelLoad - soundSliderDelayTime >= 0.05f) {
+            soundSliderDelayTime = Time.timeSinceLevelLoad;
+            Core.Instance.audioComponent.PlaySound(SoundId.Fruit_Put);
+        }
         Text_SoundFXValue.text = valueInt.ToString();
     }
 
@@ -498,6 +503,7 @@ public class OptionsPage : MonoBehaviour {
     /// 按下按鍵設定列表按紐
     /// </summary>
     private void OnClick_KeybindUIObject_OpenAnyKeyReceiverWindow(string nameOfKeyBind, Action<KeyCode> act_KeyCode) {
+        Core.Instance.audioComponent.PlaySound(SoundId.Click_Normal);
         Text_KeyReceiveWindowTitle.text = string.Format(string_KeyReceiveWindowTitleTextFormat, nameOfKeyBind);
         SetEnableAnyKeyReceiverWindow(true);
         anykeyReceiver.onKeyDown.RemoveAllListeners();
@@ -506,6 +512,9 @@ public class OptionsPage : MonoBehaviour {
             SetEnableAnyKeyReceiverWindow(false);
             if (key != KeyCode.Escape) {
                 act_KeyCode?.Invoke(key);
+                Core.Instance.audioComponent.PlaySound(SoundId.Click_Normal);
+            } else {
+                Core.Instance.audioComponent.PlaySound(SoundId.Click_Close);
             }
             UpdateDisplay_KeybindingList();
         }

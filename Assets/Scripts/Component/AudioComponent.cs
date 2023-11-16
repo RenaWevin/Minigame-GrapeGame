@@ -11,6 +11,12 @@ public class AudioComponent : MonoBehaviour {
 
     private readonly Dictionary<SoundId, AudioClip> audioclipDict = new Dictionary<SoundId, AudioClip>();
 
+    private bool enableBGM = true;
+    private int volumeBGM = 50; //0~100
+
+    private bool enableSound = true;
+    private int volumeSound = 50; //0~100
+
     #endregion
     #region 音樂音效AudioSource
 
@@ -63,12 +69,18 @@ public class AudioComponent : MonoBehaviour {
         audioclipDict.Add(SoundId.Fruit_Put, Clip_Fruit_Put);
         audioclipDict.Add(SoundId.Fruit_Combine, Clip_Fruit_Combine);
         audioclipDict.Add(SoundId.Fruit_Gray, Clip_Fruit_Gray);
+
+        enableBGM = PlayerPrefHelper.GetSetting_Enable_BGM();
+        volumeBGM = PlayerPrefHelper.GetSetting_Volume_BGM();
+        enableSound = PlayerPrefHelper.GetSetting_Enable_SoundFX();
+        volumeSound = PlayerPrefHelper.GetSetting_Volume_SoundFX();
     }
 
     #endregion
     #region 外部方法-更改音樂音量
 
     public void SetBGMVolume(int volume) {
+        volumeBGM = volume;
         float volumeFloat = volume * 0.01f;
         AudioSource_BGM.volume = volumeFloat;
     }
@@ -77,6 +89,7 @@ public class AudioComponent : MonoBehaviour {
     #region 外部方法-音樂切換靜音
 
     public void SetBGMMute(bool mute) {
+        enableBGM = !mute;
         AudioSource_BGM.mute = mute;
     }
 
@@ -84,8 +97,8 @@ public class AudioComponent : MonoBehaviour {
     #region 外部方法-播放音樂
 
     public void PlayBGM() {
-        AudioSource_BGM.mute = !PlayerPrefHelper.GetSetting_Enable_BGM();
-        AudioSource_BGM.volume = PlayerPrefHelper.GetSetting_Volume_BGM() * 0.01f;
+        AudioSource_BGM.mute = !enableBGM;
+        AudioSource_BGM.volume = volumeBGM * 0.01f;
         AudioSource_BGM.Play();
     }
 
@@ -93,6 +106,7 @@ public class AudioComponent : MonoBehaviour {
     #region 外部方法-更改音效音量
 
     public void SetSoundFXVolume(int volume) {
+        volumeSound = volume;
         float volumeFloat = volume * 0.01f;
         for (int i = 0; i < AudioSource_SoundFX.Length; i++) {
             AudioSource_SoundFX[i].volume = volumeFloat;
@@ -103,6 +117,7 @@ public class AudioComponent : MonoBehaviour {
     #region 外部方法-音效切換靜音
 
     public void SetSoundMute(bool mute) {
+        enableSound = !mute;
         for (int i = 0; i < AudioSource_SoundFX.Length; i++) {
             AudioSource_SoundFX[i].mute = mute;
         }
@@ -116,12 +131,12 @@ public class AudioComponent : MonoBehaviour {
     /// </summary>
     /// <param name="soundId"></param>
     public void PlaySound(SoundId soundId) {
-        bool enable_SoundFX = PlayerPrefHelper.GetSetting_Enable_SoundFX();
+        bool enable_SoundFX = enableSound;
         if (!enable_SoundFX) {
             //沒有啟用就不播放
             return;
         }
-        int volumeInt = PlayerPrefHelper.GetSetting_Volume_SoundFX();
+        int volumeInt = volumeSound;
         float volumeFloat = volumeInt * 0.01f;
         soundPrevIndex++;
         if (soundPrevIndex < 0) { soundPrevIndex = 0; }
