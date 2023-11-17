@@ -28,6 +28,9 @@ public class Core : MonoBehaviour {
     [Space]
 
     [SerializeField]
+    public LeaderboardDataComponent leaderboardDataComponent;
+
+    [SerializeField]
     public AudioComponent audioComponent;
 
     [SerializeField]
