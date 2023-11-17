@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class LeaderboardDataHelper {
+public class LeaderboardDataComponent : MonoBehaviour {
 
     ///// <summary>
     ///// 記錄新分數
