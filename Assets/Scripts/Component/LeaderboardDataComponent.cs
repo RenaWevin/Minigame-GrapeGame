@@ -147,7 +147,8 @@ public class LeaderboardDataComponent : MonoBehaviour {
             for (int i = LastRank; i > newRank; i--) {
                 int iPrev = i - 1;
                 if (datasDict.TryGetValue(iPrev, out var prevData)) {
-                    //如果前一名有的話就往後移
+                    //如果前一名有的話就往後移並刷新名次
+                    prevData.Rank = i;
                     datasDict[i] = prevData;
                 }
             }
