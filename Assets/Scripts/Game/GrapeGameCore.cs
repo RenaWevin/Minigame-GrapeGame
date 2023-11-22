@@ -103,6 +103,9 @@ public class GrapeGameCore : MonoBehaviour {
 
     private float moveSpeed = 3f;
 
+    //分數
+    private int nowYouScore = 0;
+
     //在重生游標上的水果
     private FruitObject fruitOnSpawnpointCursor = null;
     //下一個水果種類
@@ -219,9 +222,11 @@ public class GrapeGameCore : MonoBehaviour {
                     DisposeFruit(pair.fruit2);
                     //播放音效
                     Core.Instance.audioComponent.PlaySound(SoundId.Fruit_Combine);
-                    //執行加分★
-                    //(未實作)
-                    Log.Info($"合成成功！分數增加 {nextPhaseFruitId}");
+                    //執行加分
+                    int scoreAdd = (nextPhaseFruitId * (nextPhaseFruitId - 1)) / 2;
+                    nowYouScore += scoreAdd;
+                    UpdateDisplay_MyScore();
+                    Log.Info($"合成成功！分數增加 {scoreAdd}");
                 } else {
                     Log.Error($"以下兩個水果不能融合卻被加入到了合成請求中：\n{pair.fruit1.name} 與 {pair.fruit2.name}");
                     continue;
@@ -372,7 +377,8 @@ public class GrapeGameCore : MonoBehaviour {
         //清除所有水果
         DisposeAllFruit();
         //清除目前分數
-        //★
+        nowYouScore = 0;
+        UpdateDisplay_MyScore();
         //初始化重生點位置
         spawnPoint.position = spawnPointOriginal;
     }
@@ -455,6 +461,16 @@ public class GrapeGameCore : MonoBehaviour {
             newX = Mathf.Min(newX, Trans_RightBound.position.x);
             spawnPoint.position = new Vector3(newX, spawnPointOriginal.y, spawnPointOriginal.z);
         }
+    }
+
+    #endregion
+    #region UI更新事件-更新左下角自己分數事件
+
+    /// <summary>
+    /// 更新左下角自己分數事件
+    /// </summary>
+    private void UpdateDisplay_MyScore() {
+        Text_YouScore.text = nowYouScore.ToString();
     }
 
     #endregion
