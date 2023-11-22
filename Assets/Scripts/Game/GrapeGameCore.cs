@@ -32,6 +32,12 @@ public class GrapeGameCore : MonoBehaviour {
     [SerializeField, Header("離開遊戲按鈕")]
     private Button Button_StopGame;
 
+    [SerializeField, Header("前三名分數文字")]
+    private Text[] Text_LeaderboardScores;
+
+    [SerializeField, Header("自己分數文字")]
+    private Text Text_YouScore;
+
     [SerializeField, Header("右側進化列表標題文字")]
     private Text Text_Evolution;
 
@@ -394,7 +400,7 @@ public class GrapeGameCore : MonoBehaviour {
         //刷新NEXT圖片
         //★
         //抓取前三名分數並顯示
-        //★
+        UpdateDisplay_Leaderboard();
         //更新右側進化列表物件
         UpdateDisplay_FruitEvolutionList();
     }
@@ -448,6 +454,24 @@ public class GrapeGameCore : MonoBehaviour {
             newX += (Time.deltaTime * moveSpeed);
             newX = Mathf.Min(newX, Trans_RightBound.position.x);
             spawnPoint.position = new Vector3(newX, spawnPointOriginal.y, spawnPointOriginal.z);
+        }
+    }
+
+    #endregion
+    #region UI更新事件-更新左下角記分板前三名分數事件
+
+    /// <summary>
+    /// 更新左下角記分板前三名分數事件
+    /// </summary>
+    private void UpdateDisplay_Leaderboard() {
+        LeaderboardDataComponent leaderboardDataComponent = Core.Instance.leaderboardDataComponent;
+        for (int i = LeaderboardDataComponent.FirstRank; i <= LeaderboardDataComponent.LastRank; i++) {
+            Text textScore = Text_LeaderboardScores[i - 1];
+            if (leaderboardDataComponent.TryGetLeaderboardData(i, out var data)) {
+                textScore.text = data.Score.ToString();
+            } else {
+                textScore.text = "------";
+            }
         }
     }
 
