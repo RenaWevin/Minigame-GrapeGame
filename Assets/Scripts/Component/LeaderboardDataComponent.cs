@@ -73,7 +73,7 @@ public class LeaderboardDataComponent : MonoBehaviour {
             int dataCount = 0;
             if (File.Exists(filePath)) {
                 string data_raw = File.ReadAllText(filePath);
-                dataArray = JsonUtility.FromJson<LeaderboardData[]>(data_raw);
+                dataArray = JsonMapper.ToObject<LeaderboardData[]>(data_raw);
             }
             if (dataArray != null) {
                 dataCount = dataArray.Length;
