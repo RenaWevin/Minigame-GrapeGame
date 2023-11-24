@@ -25,4 +25,8 @@ public class CanvasGroupWindow : MonoBehaviour {
         m_Animator.SetBool("Show", show);
     }
 
+    public void SetEnableCanvasGroup(bool enabled) {
+        m_CanvasGroup.SetEnable(enabled);
+    }
+
 }

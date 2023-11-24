@@ -1,4 +1,5 @@
 ﻿
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -26,6 +27,8 @@ public class GrapeGameCore : MonoBehaviour {
     [SerializeField, Header("UI整個頁面CanvasGroup")]
     private CanvasGroup CanvasGroup_Page;
 
+    #region  -> 遊戲頁面
+
     [SerializeField, Header("遊戲所有物件的根物件")]
     private GameObject Obj_GameSceneObjectsRoot;
 
@@ -43,6 +46,25 @@ public class GrapeGameCore : MonoBehaviour {
 
     [SerializeField, Header("右側進化列表物件")]
     private List<FruitEvolutionListObject> fruitEvolutionListObjects = new List<FruitEvolutionListObject>();
+
+    #endregion
+    #region  -> 結算畫面
+
+    [SerializeField, Header("結算畫面UI")]
+    private CanvasGroupWindow CanvasGroupWindow_Result;
+
+    [SerializeField, Header("截圖放置區")]
+    private RawImage RawImage_ScreenShot_Result;
+    [SerializeField, Header("結算分數文字")]
+    private Text Text_ScoreValue_Result;
+    [SerializeField, Header("新紀錄文字")]
+    private Text Text_NewRecord_Result;
+    [SerializeField, Header("再玩一次按鈕")]
+    private Button Button_Retry_Result;
+    [SerializeField, Header("回到標題按鈕")]
+    private Button Button_ToTitle_Result;
+
+    #endregion
 
     #endregion
     #region 容器-水果配對
@@ -133,6 +155,11 @@ public class GrapeGameCore : MonoBehaviour {
         Button_StopGame.onClick.AddListener(OnClick_Button_StopGame);
         //水果觸碰天花板設定
         stackLimitTrigger.onFruitTouch.AddListener(OnTrigger_StackLimit);
+        //預設關閉結算畫面
+        CanvasGroupWindow_Result.SetEnableCanvasGroup(false);
+        //結算畫面按鈕
+        Button_Retry_Result.onClick.AddListener(OnClick_Button_Retry_Result);
+        Button_ToTitle_Result.onClick.AddListener(OnClick_Button_ToTitle_Result);
     }
 
     #endregion
@@ -325,22 +352,63 @@ public class GrapeGameCore : MonoBehaviour {
     /// <summary>
     /// 當水果觸碰到天花板時
     /// </summary>
-    private async void OnTrigger_StackLimit() {
+    private void OnTrigger_StackLimit() {
         if (gamePlaying && !fruitTouchedLimitTrigger) {
             //只有在遊戲還正在進行中、以及還沒碰到天花板時才處理
             fruitTouchedLimitTrigger = true;
             //遊戲結束表現
-            for (int i = 0; i < fruitsInScene.Count; i++) {
-                fruitsInScene[i].SetEnablePhysics(false);
-            }
-            ScreenCapture.CaptureScreenshot("GrapeGame.png");
-            for (int i = 0; i < fruitsInScene.Count; i++) {
-                fruitsInScene[i].SetSpriteColor(Color.gray);
-                Core.Instance.audioComponent.PlaySound(SoundId.Fruit_Gray);
-                await Task.Delay(50);
-            }
-            await Task.Delay(700);
+            GameOver();
         }
+    }
+
+    #endregion
+    #region 遊戲結束
+
+    /// <summary>
+    /// 遊戲結束(觸碰到天花板之後)
+    /// </summary>
+    private async void GameOver() {
+        //禁止按下離開遊戲
+        Button_StopGame.interactable = false;
+        //遊戲結束表現
+        for (int i = 0; i < fruitsInScene.Count; i++) {
+            fruitsInScene[i].SetEnablePhysics(false);
+        }
+        //處理截圖
+        TaskCompletionSource<Texture2D> tcs_Texture2D = new TaskCompletionSource<Texture2D>();
+        StartCoroutine(CaptureScreenshot(tcs_Texture2D));
+        Texture2D resultScreenshot = await tcs_Texture2D.Task; //暫存截圖
+        for (int i = 0; i < fruitsInScene.Count; i++) {
+            fruitsInScene[i].SetSpriteColor(Color.gray);
+            Core.Instance.audioComponent.PlaySound(SoundId.Fruit_Gray);
+            await Task.Delay(50);
+        }
+        await Task.Delay(700);
+        //顯示結算畫面
+        bool isRefreshHighScore = Core.Instance.leaderboardDataComponent.IsRefreshHighScore(nowYouScore, out int rank); //確認是否刷新
+        RawImage_ScreenShot_Result.texture = resultScreenshot;
+        Text_ScoreValue_Result.text = nowYouScore.ToString();
+        Text_NewRecord_Result.enabled = isRefreshHighScore;
+        if (isRefreshHighScore) {
+            Core.Instance.audioComponent.PlaySound(SoundId.Result_Win);
+        } else {
+            Core.Instance.audioComponent.PlaySound(SoundId.Result_Lose);
+        }
+        CanvasGroupWindow_Result.SetShowWindow(true);
+    }
+
+    #endregion
+    #region IEnumerator-截圖
+
+    /// <summary>
+    /// IEnumerator-截圖
+    /// </summary>
+    /// <param name="taskCompletionSource"></param>
+    /// <returns></returns>
+    private IEnumerator CaptureScreenshot(TaskCompletionSource<Texture2D> taskCompletionSource) {
+        yield return new WaitForEndOfFrame();
+        Texture2D texture2D = ScreenCapture.CaptureScreenshotAsTexture();
+        taskCompletionSource.TrySetResult(texture2D);
     }
 
     #endregion
@@ -409,6 +477,8 @@ public class GrapeGameCore : MonoBehaviour {
         UpdateDisplay_Leaderboard();
         //更新右側進化列表物件
         UpdateDisplay_FruitEvolutionList();
+        //允許按下離開遊戲
+        Button_StopGame.interactable = true;
     }
 
     #endregion
@@ -534,8 +604,36 @@ public class GrapeGameCore : MonoBehaviour {
     private void OnClick_Button_StopGame() {
         Core.Instance.audioComponent.PlaySound(SoundId.Click_Close);
         StopGame();
+        //★過場動畫
         SetEnableGamePage(false);
         Core.Instance.titlePage.SetEnableTitlePage(true);
+        //★過場動畫退出
+    }
+
+    /// <summary>
+    /// 結算畫面按下再玩一次
+    /// </summary>
+    private void OnClick_Button_Retry_Result() {
+        Core.Instance.audioComponent.PlaySound(SoundId.Click_StartGame);
+        StopGame();
+        //★過場動畫
+        ResetGame();
+        CanvasGroupWindow_Result.SetShowWindow(false);
+        //★過場動畫退出
+        StartGame();
+    }
+
+    /// <summary>
+    /// 結算畫面按下回到標題
+    /// </summary>
+    private void OnClick_Button_ToTitle_Result() {
+        Core.Instance.audioComponent.PlaySound(SoundId.Click_Normal);
+        StopGame();
+        //★過場動畫
+        CanvasGroupWindow_Result.SetShowWindow(false);
+        SetEnableGamePage(false);
+        Core.Instance.titlePage.SetEnableTitlePage(true);
+        //★過場動畫退出
     }
 
     #endregion
