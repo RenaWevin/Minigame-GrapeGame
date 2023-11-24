@@ -65,6 +65,21 @@ public class GrapeGameCore : MonoBehaviour {
     private Button Button_ToTitle_Result;
 
     #endregion
+    #region  -> 提交高分紀錄頁面
+
+    [SerializeField, Header("提交高分紀錄頁面UI")]
+    private CanvasGroup CanvasGroup_WindowPage_NewRecordSubmit;
+
+    [SerializeField, Header("新紀錄副標題")]
+    private Text Text_NewRecordSubmitSubtitle;
+    [SerializeField, Header("新紀錄分數")]
+    private Text Text_ScoreValue_NewRecordSubmit;
+    [SerializeField, Header("新紀錄名字輸入")]
+    private InputField InputField_Name_NewRecordSubmit;
+    [SerializeField, Header("儲存分數按鈕")]
+    private Button Button_SaveScore;
+
+    #endregion
 
     #endregion
     #region 容器-水果配對
@@ -160,6 +175,10 @@ public class GrapeGameCore : MonoBehaviour {
         //結算畫面按鈕
         Button_Retry_Result.onClick.AddListener(OnClick_Button_Retry_Result);
         Button_ToTitle_Result.onClick.AddListener(OnClick_Button_ToTitle_Result);
+        //新紀錄頁面關閉
+        CanvasGroup_WindowPage_NewRecordSubmit.SetEnable(false);
+        //提交分數頁面按鈕
+        Button_SaveScore.onClick.AddListener(OnClick_Button_SaveScore_NewRecordSubmit);
     }
 
     #endregion
@@ -390,10 +409,13 @@ public class GrapeGameCore : MonoBehaviour {
         Text_ScoreValue_Result.text = nowYouScore.ToString();
         Text_NewRecord_Result.enabled = isRefreshHighScore;
         if (isRefreshHighScore) {
+            Text_NewRecordSubmitSubtitle.text = $"你刷新了排行第 {rank} 名的紀錄";
+            Text_ScoreValue_NewRecordSubmit.text = nowYouScore.ToString();
             Core.Instance.audioComponent.PlaySound(SoundId.Result_Win);
         } else {
             Core.Instance.audioComponent.PlaySound(SoundId.Result_Lose);
         }
+        CanvasGroup_WindowPage_NewRecordSubmit.SetEnable(isRefreshHighScore);
         CanvasGroupWindow_Result.SetShowWindow(true);
     }
 
@@ -634,6 +656,15 @@ public class GrapeGameCore : MonoBehaviour {
         SetEnableGamePage(false);
         Core.Instance.titlePage.SetEnableTitlePage(true);
         //★過場動畫退出
+    }
+
+    /// <summary>
+    /// 提交新紀錄按鈕
+    /// </summary>
+    private void OnClick_Button_SaveScore_NewRecordSubmit() {
+        Core.Instance.audioComponent.PlaySound(SoundId.Click_Normal);
+        Core.Instance.leaderboardDataComponent.SaveNewRecord(nowYouScore, InputField_Name_NewRecordSubmit.text);
+        CanvasGroup_WindowPage_NewRecordSubmit.SetEnable(false);
     }
 
     #endregion
