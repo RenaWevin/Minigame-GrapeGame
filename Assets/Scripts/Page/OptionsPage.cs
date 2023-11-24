@@ -235,6 +235,11 @@ public class OptionsPage : MonoBehaviour {
             );
         });
 
+        //電腦版-按鍵設定
+        keycode_MoveLeft = PlayerPrefHelper.GetSetting_Keybind_MoveLeft();
+        keycode_MoveRight = PlayerPrefHelper.GetSetting_Keybind_MoveRight();
+        keycode_PutFruit = PlayerPrefHelper.GetSetting_Keybind_PutFruit();
+
 #endif
 
         #endregion
