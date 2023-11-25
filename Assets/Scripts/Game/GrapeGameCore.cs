@@ -53,6 +53,10 @@ public class GrapeGameCore : MonoBehaviour {
     [SerializeField, Header("結算畫面UI")]
     private CanvasGroupWindow CanvasGroupWindow_Result;
 
+    [SerializeField, Header("2ㄏ圖片")]
+    private Image Image_HealingUhhuh;
+    [SerializeField, Header("愛心圖片")]
+    private Image Image_HealingHeart;
     [SerializeField, Header("截圖放置區")]
     private RawImage RawImage_ScreenShot_Result;
     [SerializeField, Header("結算分數文字")]
@@ -405,6 +409,8 @@ public class GrapeGameCore : MonoBehaviour {
         await Task.Delay(700);
         //顯示結算畫面
         bool isRefreshHighScore = Core.Instance.leaderboardDataComponent.IsRefreshHighScore(nowYouScore, out int rank); //確認是否刷新
+        Image_HealingUhhuh.enabled = !isRefreshHighScore;
+        Image_HealingHeart.enabled = isRefreshHighScore;
         RawImage_ScreenShot_Result.texture = resultScreenshot;
         Text_ScoreValue_Result.text = nowYouScore.ToString();
         Text_NewRecord_Result.enabled = isRefreshHighScore;
