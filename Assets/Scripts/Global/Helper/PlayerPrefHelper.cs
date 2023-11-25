@@ -213,10 +213,6 @@ public static class PlayerPrefHelper {
     #endregion
 
     #endregion
-    #region  -> 解析度★
-    #endregion
-    #region  -> 全螢幕模式★
-    #endregion
 
     #endregion
 
