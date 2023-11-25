@@ -99,6 +99,27 @@ public class OptionsPage : MonoBehaviour {
     private Dropdown Dropdown_Resolution;
 
     #endregion
+    #region  -> 製作名單
+
+    [Space]
+    [Header("製作名單")]
+
+    [SerializeField]
+    private Button Button_Healing_Youtube;
+    [SerializeField]
+    private Button Button_Healing_Twitter;
+    [SerializeField]
+    private Button Button_Runo_Youtube;
+    [SerializeField]
+    private Button Button_Runo_Twitter;
+    [SerializeField]
+    private Button Button_AkasakaYuki_Twitter;
+    [SerializeField]
+    private Button Button_KENKENBGM;
+    [SerializeField]
+    private Button Button_SoundeffectLab;
+
+    #endregion
     #region  -> 按鍵設定頁面
 
     [Space]
@@ -164,9 +185,11 @@ public class OptionsPage : MonoBehaviour {
         });
         //頁籤
         ButtonPage_Settings.onClick.AddListener(delegate {
+            Core.Instance.audioComponent.PlaySound(SoundId.Click_Normal);
             SwitchPanel(OptionsPageType.Settings);
         });
         ButtonPage_Staff.onClick.AddListener(delegate {
+            Core.Instance.audioComponent.PlaySound(SoundId.Click_Normal);
             SwitchPanel(OptionsPageType.Staff);
         });
 
@@ -324,6 +347,17 @@ public class OptionsPage : MonoBehaviour {
 #endif
 
         #endregion
+        #region  -> 初始化製作名單按鍵URL
+
+        Button_Healing_Youtube.onClick.AddListener(OnClick_Button_Healing_Youtube);
+        Button_Healing_Twitter.onClick.AddListener(OnClick_Button_Healing_Twitter);
+        Button_Runo_Youtube.onClick.AddListener(OnClick_Button_Runo_Youtube);
+        Button_Runo_Twitter.onClick.AddListener(OnClick_Button_Runo_Twitter);
+        Button_AkasakaYuki_Twitter.onClick.AddListener(OnClick_Button_AkasakaYuki_Twitter);
+        Button_KENKENBGM.onClick.AddListener(OnClick_Button_KENKENBGM);
+        Button_SoundeffectLab.onClick.AddListener(OnClick_Button_SoundeffectLab);
+
+        #endregion
         #region  -> 按鈕設定頁面
 
         CanvasGroup_KeyReceiveWindow.SetEnable(false);
@@ -358,6 +392,17 @@ public class OptionsPage : MonoBehaviour {
     }
 
     #endregion
+
+    #endregion
+    #region 開啟網頁
+
+    /// <summary>
+    /// 開啟網頁
+    /// </summary>
+    /// <param name="url"></param>
+    private void OpenUrl(string url) {
+        Application.OpenURL(url);
+    }
 
     #endregion
     #region UI事件
@@ -573,6 +618,67 @@ public class OptionsPage : MonoBehaviour {
         if (resolution.width > 0) {
             Screen.SetResolution(resolution.width, resolution.height, fullScreenMode, 60);
         }
+    }
+
+    #endregion
+
+    #endregion
+    #region  -> 製作名單
+
+    #region  --> 希靈YT
+
+    private void OnClick_Button_Healing_Youtube() {
+        Core.Instance.audioComponent.PlaySound(SoundId.Click_Normal);
+        OpenUrl("https://www.youtube.com/@HealingCh");
+    }
+
+    #endregion
+    #region  --> 希靈推特
+
+    private void OnClick_Button_Healing_Twitter() {
+        Core.Instance.audioComponent.PlaySound(SoundId.Click_Normal);
+        OpenUrl("https://twitter.com/Healingluka");
+    }
+
+    #endregion
+    #region  --> 露諾YT
+
+    private void OnClick_Button_Runo_Youtube() {
+        Core.Instance.audioComponent.PlaySound(SoundId.Click_Normal);
+        OpenUrl("https://www.youtube.com/@runoch0909");
+    }
+
+    #endregion
+    #region  --> 露諾推特
+
+    private void OnClick_Button_Runo_Twitter() {
+        Core.Instance.audioComponent.PlaySound(SoundId.Click_Normal);
+        OpenUrl("https://twitter.com/yumemirunoo");
+    }
+
+    #endregion
+    #region  --> 阿雪老師推特
+
+    private void OnClick_Button_AkasakaYuki_Twitter() {
+        Core.Instance.audioComponent.PlaySound(SoundId.Click_Normal);
+        OpenUrl("https://twitter.com/_Akasaka_Yuki");
+    }
+
+    #endregion
+    #region  --> KENKENBGM官網
+
+    private void OnClick_Button_KENKENBGM() {
+        Core.Instance.audioComponent.PlaySound(SoundId.Click_Normal);
+        OpenUrl("https://kenkenbgm.blogspot.com/");
+    }
+
+    #endregion
+    #region  --> 效果音Lab官網
+
+    private void OnClick_Button_SoundeffectLab() {
+        //効果音ラボ
+        Core.Instance.audioComponent.PlaySound(SoundId.Click_Normal);
+        OpenUrl("https://soundeffect-lab.info/");
     }
 
     #endregion
