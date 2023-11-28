@@ -14,6 +14,7 @@ public class GrapeGameCore : MonoBehaviour {
     /// </summary>
     [SerializeField]
     private FruitFactory fruitFactory;
+    public FruitFactory FruitFactory { get => fruitFactory; }
 
     /// <summary>
     /// 水果堆疊上限碰撞箱觸發器

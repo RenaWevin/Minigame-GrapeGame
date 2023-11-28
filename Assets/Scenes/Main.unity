@@ -5673,6 +5673,15 @@ MonoBehaviour:
   canvasGroupWindow: {fileID: 2004749410}
   Button_Close: {fileID: 1447764348}
   Text_Controll_HowToPlay: {fileID: 1754743824}
+  Image_1: {fileID: 1226679857}
+  Image_2: {fileID: 1332400217}
+  Image_3: {fileID: 1745414061}
+  Image_4: {fileID: 1697037051}
+  Image_5: {fileID: 215394270}
+  Image_6: {fileID: 1220407044}
+  Image_7: {fileID: 934761094}
+  Image_8: {fileID: 1261716908}
+  Image_Heart: {fileID: 1762677244}
 --- !u!1 &748374066
 GameObject:
   m_ObjectHideFlags: 0
@@ -15838,7 +15847,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: -120}
-  m_SizeDelta: {x: 50, y: 50}
+  m_SizeDelta: {x: 80, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1762677244
 MonoBehaviour:
