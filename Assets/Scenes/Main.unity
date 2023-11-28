@@ -5672,6 +5672,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canvasGroupWindow: {fileID: 2004749410}
   Button_Close: {fileID: 1447764348}
+  ScrollView_HowToPlay: {fileID: 688501172}
   Text_Controll_HowToPlay: {fileID: 1754743824}
   Image_1: {fileID: 1226679857}
   Image_2: {fileID: 1332400217}

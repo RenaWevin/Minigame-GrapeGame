@@ -12,6 +12,9 @@ public class HowToPlayPage : MonoBehaviour {
     [SerializeField]
     private Button Button_Close;
 
+    [SerializeField]
+    private ScrollRect ScrollView_HowToPlay;
+
     #region  -> 控制方法
 
     [Space]
@@ -59,6 +62,7 @@ public class HowToPlayPage : MonoBehaviour {
     public void SetShowWindow(bool show) {
         canvasGroupWindow.SetShowWindow(show);
         if (show) {
+            ScrollView_HowToPlay.verticalNormalizedPosition = 1f;
             UpdateDisplayPage();
         }
     }
