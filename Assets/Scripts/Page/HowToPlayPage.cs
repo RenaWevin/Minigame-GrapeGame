@@ -29,6 +29,7 @@ public class HowToPlayPage : MonoBehaviour {
     [Space]
     [Header("水果圖片列表")]
 
+    //圖片
     [SerializeField] private Image Image_1;
     [SerializeField] private Image Image_2;
     [SerializeField] private Image Image_3;
@@ -40,16 +41,37 @@ public class HowToPlayPage : MonoBehaviour {
 
     [SerializeField] private Image Image_Heart;
 
+    [Header("水果圖片檢視按鈕")]
+
+    //檢視按鈕
+    [SerializeField] private Button ZoomInButton_3;
+    [SerializeField] private Button ZoomInButton_4;
+    [SerializeField] private Button ZoomInButton_5;
+    [SerializeField] private Button ZoomInButton_6;
+    [SerializeField] private Button ZoomInButton_7;
+    [SerializeField] private Button ZoomInButton_8;
+
+    [SerializeField] private Button ZoomInButton_Heart;
+
     #endregion
 
     #endregion
     #region Awake
 
     private void Awake() {
+        //關閉按鈕
         Button_Close.onClick.AddListener(delegate {
             Core.Instance.audioComponent.PlaySound(SoundId.Click_Close);
             SetShowWindow(false);
         });
+        //檢視圖片按鈕
+        ZoomInButton_3.onClick.AddListener(delegate { OnClick_ZoomInButton(Image_3, new Vector2(512, 512)); });
+        ZoomInButton_4.onClick.AddListener(delegate { OnClick_ZoomInButton(Image_4, new Vector2(512, 512)); });
+        ZoomInButton_5.onClick.AddListener(delegate { OnClick_ZoomInButton(Image_5, new Vector2(1024, 1024)); });
+        ZoomInButton_6.onClick.AddListener(delegate { OnClick_ZoomInButton(Image_6, new Vector2(512, 512)); });
+        ZoomInButton_7.onClick.AddListener(delegate { OnClick_ZoomInButton(Image_7, new Vector2(512, 512)); });
+        ZoomInButton_8.onClick.AddListener(delegate { OnClick_ZoomInButton(Image_8, new Vector2(512, 512)); });
+        ZoomInButton_Heart.onClick.AddListener(delegate { OnClick_ZoomInButton(Image_Heart, new Vector2(512, 512)); });
     }
 
     #endregion
@@ -89,6 +111,27 @@ public class HowToPlayPage : MonoBehaviour {
         Image_7.sprite = fruitFactory.GetFruitSprite(fruitSpriteType, FruitType.Peach);
         Image_8.sprite = fruitFactory.GetFruitSprite(fruitSpriteType, FruitType.Watermelon);
         Image_Heart.sprite = fruitFactory.GetFruitSprite(fruitSpriteType, FruitType.Joker);
+        //水果按鈕
+        bool isButtonEnable = fruitSpriteType != FruitSpriteType.Normal;
+        ZoomInButton_3.interactable = isButtonEnable;
+        ZoomInButton_4.interactable = isButtonEnable;
+        ZoomInButton_5.interactable = isButtonEnable;
+        ZoomInButton_6.interactable = isButtonEnable;
+        ZoomInButton_7.interactable = isButtonEnable;
+        ZoomInButton_8.interactable = isButtonEnable;
+        ZoomInButton_Heart.interactable = isButtonEnable;
+    }
+
+    /// <summary>
+    /// 按下檢視圖片按鈕
+    /// </summary>
+    /// <param name="image"></param>
+    /// <param name="size"></param>
+    private void OnClick_ZoomInButton(Image image, Vector2 size) {
+        Core.Instance.audioComponent.PlaySound(SoundId.Click_Normal);
+        ImageViewerPage imageViewerPage = Core.Instance.imageViewerPage;
+        imageViewerPage.SetSpriteAndSize(image, size);
+        imageViewerPage.SetShowWindow(true);
     }
 
     #endregion

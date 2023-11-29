@@ -25,6 +25,9 @@ public class Core : MonoBehaviour {
     [SerializeField]
     public OptionsPage optionsPage;
 
+    [SerializeField]
+    public ImageViewerPage imageViewerPage;
+
     [Space]
 
     [SerializeField]
