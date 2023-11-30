@@ -2227,7 +2227,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -0.00002540126}
   m_SizeDelta: {x: 512, y: 512}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &253149220
@@ -19083,6 +19083,7 @@ MonoBehaviour:
   CanvasGroup_Page: {fileID: 1199963923}
   Obj_GameSceneObjectsRoot: {fileID: 530591610}
   Button_StopGame: {fileID: 2026469634}
+  Image_Next: {fileID: 1568429797}
   Text_LeaderboardScores:
   - {fileID: 722690616}
   - {fileID: 189384263}

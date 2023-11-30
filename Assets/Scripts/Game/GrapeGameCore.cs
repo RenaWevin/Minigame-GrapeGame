@@ -36,6 +36,9 @@ public class GrapeGameCore : MonoBehaviour {
     [SerializeField, Header("離開遊戲按鈕")]
     private Button Button_StopGame;
 
+    [SerializeField, Header("NEXT圖片")]
+    private Image Image_Next;
+
     [SerializeField, Header("前三名分數文字")]
     private Text[] Text_LeaderboardScores;
 
@@ -464,7 +467,8 @@ public class GrapeGameCore : MonoBehaviour {
         fruitOnSpawnpointCursor.SetEnablePhysics(false);
         //下一個
         nextSpawnFruitType = NewRandomFruitType();
-        //刷新NEXT圖片★
+        //刷新NEXT圖片
+        UpdateDisplay_NextImage();
     }
 
     #endregion
@@ -507,7 +511,7 @@ public class GrapeGameCore : MonoBehaviour {
         //預先隨機NEXT
         nextSpawnFruitType = NewRandomFruitType();
         //刷新NEXT圖片
-        //★
+        UpdateDisplay_NextImage();
         //檢查夢見露諾是否要顯示
         SpriteRenderer_Runo.enabled = PlayerPrefHelper.GetSetting_FruitSpriteType() != FruitSpriteType.Normal;
         //抓取前三名分數並顯示
@@ -568,6 +572,18 @@ public class GrapeGameCore : MonoBehaviour {
             newX = Mathf.Min(newX, Trans_RightBound.position.x);
             spawnPoint.position = new Vector3(newX, spawnPointOriginal.y, spawnPointOriginal.z);
         }
+    }
+
+    #endregion
+    #region UI更新事件-更新NEXT圖片
+
+    /// <summary>
+    /// UI更新事件-更新NEXT圖片
+    /// </summary>
+    private void UpdateDisplay_NextImage() {
+        //Image_Next
+        //nextSpawnFruitType
+        //★
     }
 
     #endregion
