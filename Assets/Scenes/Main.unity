@@ -19117,6 +19117,7 @@ MonoBehaviour:
   spawnPoint: {fileID: 2081542244}
   spawnPointContainer: {fileID: 1950812620}
   trans_FruitContainer: {fileID: 661777392}
+  SpriteRenderer_Runo: {fileID: 1102220197}
 --- !u!1 &1925213718
 GameObject:
   m_ObjectHideFlags: 0

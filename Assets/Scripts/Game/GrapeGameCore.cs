@@ -128,6 +128,12 @@ public class GrapeGameCore : MonoBehaviour {
     [SerializeField, Header("水果物件放置容器")]
     private Transform trans_FruitContainer;
 
+    /// <summary>
+    /// 露諾圖片
+    /// </summary>
+    [SerializeField, Header("露諾圖片")]
+    private SpriteRenderer SpriteRenderer_Runo;
+
     #endregion
     #region 參數參考區
 
@@ -502,6 +508,8 @@ public class GrapeGameCore : MonoBehaviour {
         nextSpawnFruitType = NewRandomFruitType();
         //刷新NEXT圖片
         //★
+        //檢查夢見露諾是否要顯示
+        SpriteRenderer_Runo.enabled = PlayerPrefHelper.GetSetting_FruitSpriteType() != FruitSpriteType.Normal;
         //抓取前三名分數並顯示
         UpdateDisplay_Leaderboard();
         //更新右側進化列表物件
