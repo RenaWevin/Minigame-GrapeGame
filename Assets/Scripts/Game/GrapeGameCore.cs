@@ -170,6 +170,9 @@ public class GrapeGameCore : MonoBehaviour {
     //每次檢查時，已經被合成過的水果的HashSet
     private readonly HashSet<FruitObject> appliedCombinedFruits = new HashSet<FruitObject>();
 
+    //水果合成次數，在生成Joker後會歸零
+    private int jokerMeter_FruitCombine;
+
     #endregion
     #region Unity內建方法
 
@@ -287,6 +290,8 @@ public class GrapeGameCore : MonoBehaviour {
                     nowYouScore += scoreAdd;
                     UpdateDisplay_MyScore();
                     Log.Info($"合成成功！分數增加 {scoreAdd}");
+                    //增加Joker計數器
+                    jokerMeter_FruitCombine++;
                 } else {
                     Log.Error($"以下兩個水果不能融合卻被加入到了合成請求中：\n{pair.fruit1.name} 與 {pair.fruit2.name}");
                     continue;
@@ -320,10 +325,14 @@ public class GrapeGameCore : MonoBehaviour {
     /// </summary>
     /// <returns></returns>
     private FruitType NewRandomFruitType() {
-        int jokerChanse = Random.Range(0, 100);
-        if (jokerChanse <= 5) {
-            Log.Info("生成Joker");
-            //★ return FruitType.Joker;
+        int jokerRan = Random.Range(0, 100);
+        int jokerChance = jokerMeter_FruitCombine / 5;
+        jokerChance.FixValueInRange(0, 10);
+        if (jokerRan < jokerChance) {
+            //計數器歸零
+            jokerMeter_FruitCombine = 0;
+            //生成Joker
+            return FruitType.Joker;
         }
         int typeId = Random.Range((int)FruitType.Seed, (int)FruitType.Apple);
         return (FruitType)typeId;
