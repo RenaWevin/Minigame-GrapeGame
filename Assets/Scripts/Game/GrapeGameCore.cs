@@ -581,9 +581,18 @@ public class GrapeGameCore : MonoBehaviour {
     /// UI更新事件-更新NEXT圖片
     /// </summary>
     private void UpdateDisplay_NextImage() {
-        //Image_Next
-        //nextSpawnFruitType
-        //★
+        FruitSpriteType fruitSpriteType = PlayerPrefHelper.GetSetting_FruitSpriteType();
+        Sprite nextSprite = fruitFactory.GetFruitSprite(fruitSpriteType, nextSpawnFruitType);
+        Image_Next.sprite = nextSprite;
+        Vector2 newSize;
+        if (nextSpawnFruitType == FruitType.Pineapple) {
+            newSize = new Vector2(200, 200);
+        } else {
+            newSize = new Vector2(100, 100);
+        }
+        var rectTransform = Image_Next.rectTransform;
+        rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, newSize.x);
+        rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, newSize.y);
     }
 
     #endregion

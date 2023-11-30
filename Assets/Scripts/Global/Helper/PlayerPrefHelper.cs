@@ -3,6 +3,14 @@ using UnityEngine;
 
 public static class PlayerPrefHelper {
 
+    #region 讀取後暫存容器
+
+    private struct CacheContainer<T> {
+        public bool isLoaded;
+        public T value;
+    }
+
+    #endregion
     #region SettingKeys
 
     private const string PrefKeyFormat_Setting = "Setting_{0}";
@@ -117,16 +125,31 @@ public static class PlayerPrefHelper {
     #endregion
     #region  -> 水果圖片種類
 
+    #region  --> 初次讀取後暫存
+
+    private static CacheContainer<FruitSpriteType> cache_FruitSpriteType = new CacheContainer<FruitSpriteType>() {
+        isLoaded = false,
+        value = 0
+    };
+
+    #endregion
+
     /// <summary>
     /// 取得設定-水果圖片種類
     /// </summary>
     /// <returns></returns>
     public static FruitSpriteType GetSetting_FruitSpriteType() {
-        int output = PlayerPrefs.GetInt(
+        if (cache_FruitSpriteType.isLoaded) {
+            return cache_FruitSpriteType.value;
+        }
+        int outputValue = PlayerPrefs.GetInt(
             string.Format(PrefKeyFormat_Setting, KeyPart_FruitSpriteType),
             (int)FruitSpriteType.TofuSkin
         );
-        return (FruitSpriteType)output;
+        FruitSpriteType output = (FruitSpriteType)outputValue;
+        cache_FruitSpriteType.value = output;
+        cache_FruitSpriteType.isLoaded = true;
+        return output;
     }
 
     /// <summary>
@@ -134,6 +157,8 @@ public static class PlayerPrefHelper {
     /// </summary>
     /// <param name="fruitSpriteType"></param>
     public static void SetSetting_FruitSpriteType(FruitSpriteType fruitSpriteType) {
+        cache_FruitSpriteType.value = fruitSpriteType;
+        cache_FruitSpriteType.isLoaded = true;
         PlayerPrefs.SetInt(
             string.Format(PrefKeyFormat_Setting, KeyPart_FruitSpriteType),
             (int)fruitSpriteType
