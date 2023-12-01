@@ -53,12 +53,19 @@ public class TitlePage : MonoBehaviour {
     /// <summary>
     /// 按下開始遊戲
     /// </summary>
-    public void OnClick_Start() {
+    public async void OnClick_Start() {
         Core.Instance.audioComponent.PlaySound(SoundId.Click_StartGame);
+        if (TransitionAnimationController.Instance != null) {
+            await TransitionAnimationController.Instance.Play_Show();
+        }
         SetEnableTitlePage(false);
         var gameCore = Core.Instance.grapeGameCore;
         gameCore.SetEnableGamePage(true);
         gameCore.ResetGame();
+        gameCore.PrepareStart();
+        if (TransitionAnimationController.Instance != null) {
+            await TransitionAnimationController.Instance.Play_Hide();
+        }
         gameCore.StartGame();
     }
 

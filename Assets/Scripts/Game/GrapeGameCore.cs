@@ -499,15 +499,12 @@ public class GrapeGameCore : MonoBehaviour {
     }
 
     #endregion
-    #region 外部方法-開始遊戲 
+    #region 外部方法-開始遊戲
 
     /// <summary>
-    /// 重設遊戲
+    /// 準備開始遊戲(播放過場前，用以預處理視覺上一定要有的部分)
     /// </summary>
-    public void StartGame() {
-        //開啟遊戲狀態
-        gamePlaying = true;
-        fruitTouchedLimitTrigger = false;
+    public void PrepareStart() {
         //生成一顆水果在重生點
         FruitType spawnpointFruitType = NewRandomFruitType();
         fruitOnSpawnpointCursor = SpawnFruit(
@@ -526,6 +523,15 @@ public class GrapeGameCore : MonoBehaviour {
         UpdateDisplay_Leaderboard();
         //更新右側進化列表物件
         UpdateDisplay_FruitEvolutionList();
+    }
+
+    /// <summary>
+    /// 開始遊戲(播放過場後)
+    /// </summary>
+    public void StartGame() {
+        //開啟遊戲狀態
+        gamePlaying = true;
+        fruitTouchedLimitTrigger = false;
         //允許按下離開遊戲
         Button_StopGame.interactable = true;
     }
@@ -539,8 +545,10 @@ public class GrapeGameCore : MonoBehaviour {
     public void StopGame() {
         //關閉遊戲狀態
         gamePlaying = false;
-        //清除所有水果
-        DisposeAllFruit();
+        //關閉所有水果物理
+        for (int i = 0; i < fruitsInScene.Count; i++) {
+            fruitsInScene[i].SetEnablePhysics(false);
+        }
     }
 
     #endregion
@@ -671,39 +679,54 @@ public class GrapeGameCore : MonoBehaviour {
     /// <summary>
     /// 按下離開遊戲按鈕
     /// </summary>
-    private void OnClick_Button_StopGame() {
+    private async void OnClick_Button_StopGame() {
         Core.Instance.audioComponent.PlaySound(SoundId.Click_Close);
         StopGame();
-        //★過場動畫
+        if (TransitionAnimationController.Instance != null) {
+            await TransitionAnimationController.Instance.Play_Show();
+        }
+        ResetGame();
         SetEnableGamePage(false);
         Core.Instance.titlePage.SetEnableTitlePage(true);
-        //★過場動畫退出
+        if (TransitionAnimationController.Instance != null) {
+            await TransitionAnimationController.Instance.Play_Hide();
+        }
     }
 
     /// <summary>
     /// 結算畫面按下再玩一次
     /// </summary>
-    private void OnClick_Button_Retry_Result() {
+    private async void OnClick_Button_Retry_Result() {
         Core.Instance.audioComponent.PlaySound(SoundId.Click_StartGame);
         StopGame();
-        //★過場動畫
+        if (TransitionAnimationController.Instance != null) {
+            await TransitionAnimationController.Instance.Play_Show();
+        }
         ResetGame();
         CanvasGroupWindow_Result.SetShowWindow(false);
-        //★過場動畫退出
+        PrepareStart();
+        if (TransitionAnimationController.Instance != null) {
+            await TransitionAnimationController.Instance.Play_Hide();
+        }
         StartGame();
     }
 
     /// <summary>
     /// 結算畫面按下回到標題
     /// </summary>
-    private void OnClick_Button_ToTitle_Result() {
+    private async void OnClick_Button_ToTitle_Result() {
         Core.Instance.audioComponent.PlaySound(SoundId.Click_Normal);
         StopGame();
-        //★過場動畫
+        if (TransitionAnimationController.Instance != null) {
+            await TransitionAnimationController.Instance.Play_Show();
+        }
+        ResetGame();
         CanvasGroupWindow_Result.SetShowWindow(false);
         SetEnableGamePage(false);
         Core.Instance.titlePage.SetEnableTitlePage(true);
-        //★過場動畫退出
+        if (TransitionAnimationController.Instance != null) {
+            await TransitionAnimationController.Instance.Play_Hide();
+        }
     }
 
     /// <summary>
