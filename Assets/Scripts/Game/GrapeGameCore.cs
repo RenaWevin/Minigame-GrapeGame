@@ -289,7 +289,6 @@ public class GrapeGameCore : MonoBehaviour {
                     int scoreAdd = (nextPhaseFruitId * (nextPhaseFruitId - 1)) / 2;
                     nowYouScore += scoreAdd;
                     UpdateDisplay_MyScore();
-                    Log.Info($"合成成功！分數增加 {scoreAdd}");
                     //增加Joker計數器
                     jokerMeter_FruitCombine++;
                 } else {

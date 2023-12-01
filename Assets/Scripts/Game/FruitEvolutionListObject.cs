@@ -13,6 +13,9 @@ public class FruitEvolutionListObject : MonoBehaviour {
     [SerializeField]
     private Text text_FruitName;
 
+    [SerializeField]
+    private float preferredTextWidth = 195;
+
     public void SetSprite(Sprite sprite) {
         if (image_Fruit != null) {
             image_Fruit.sprite = sprite;
@@ -22,6 +25,15 @@ public class FruitEvolutionListObject : MonoBehaviour {
     public void SetFruitName(string name) {
         if (text_FruitName != null) {
             text_FruitName.text = name;
+            if (preferredTextWidth > 0) {
+                float pWidth = text_FruitName.preferredWidth;
+                if (pWidth > preferredTextWidth) {
+                    float scale = pWidth / preferredTextWidth;
+                    text_FruitName.rectTransform.localScale = new Vector3(1, scale, 1);
+                } else {
+                    text_FruitName.rectTransform.localScale = Vector3.one;
+                }
+            }
         }
     }
 
