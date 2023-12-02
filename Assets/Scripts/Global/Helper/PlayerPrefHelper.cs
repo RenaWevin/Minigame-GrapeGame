@@ -240,5 +240,46 @@ public static class PlayerPrefHelper {
     #endregion
 
     #endregion
+    #region 遊戲資訊-是否顯示地瓜在右側
+
+    #region  -> 初次讀取後暫存
+
+    private static CacheContainer<bool> cache_ShowSweetPotato = new CacheContainer<bool>() {
+        isLoaded = false,
+        value = false
+    };
+
+    #endregion
+
+    private const string PrefKey_ShowSweetPotato = "ShowSweetPotato";
+
+    /// <summary>
+    /// 儲存資訊-是否顯示地瓜在右側
+    /// </summary>
+    /// <param name="isShow"></param>
+    public static void SetInfo_ShowSweetPotato(bool isShow) {
+        cache_ShowSweetPotato.value = isShow;
+        cache_ShowSweetPotato.isLoaded = true;
+        int value = isShow ? 1 : 0;
+        PlayerPrefs.SetInt(PrefKey_ShowSweetPotato, value);
+        PlayerPrefs.Save();
+    }
+
+    /// <summary>
+    /// 取得資訊-是否顯示地瓜在右側
+    /// </summary>
+    /// <returns></returns>
+    public static bool GetInfo_ShowSweetPotato() {
+        if (cache_ShowSweetPotato.isLoaded) {
+            return cache_ShowSweetPotato.value;
+        }
+        int outputValue = PlayerPrefs.GetInt(PrefKey_ShowSweetPotato, 0);
+        bool output = (outputValue == 1);
+        cache_ShowSweetPotato.value = output;
+        cache_ShowSweetPotato.isLoaded = true;
+        return output;
+    }
+
+    #endregion
 
 }
