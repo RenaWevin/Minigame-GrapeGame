@@ -105,17 +105,28 @@ public class OptionsPage : MonoBehaviour {
     [Header("製作名單")]
 
     [SerializeField]
+    private Button Button_RenaWevin_Website;
+    [SerializeField]
+    private Button Button_RenaWevin_Youtube;
+    [SerializeField]
+    private Button Button_RenaWevin_Twitter;
+
+    [SerializeField]
     private Button Button_Healing_Youtube;
     [SerializeField]
     private Button Button_Healing_Twitter;
+
     [SerializeField]
     private Button Button_Runo_Youtube;
     [SerializeField]
     private Button Button_Runo_Twitter;
+
     [SerializeField]
     private Button Button_AkasakaYuki_Twitter;
+
     [SerializeField]
     private Button Button_KENKENBGM;
+
     [SerializeField]
     private Button Button_SoundeffectLab;
 
@@ -349,6 +360,9 @@ public class OptionsPage : MonoBehaviour {
         #endregion
         #region  -> 初始化製作名單按鍵URL
 
+        Button_RenaWevin_Website.onClick.AddListener(OnClick_Button_RenaWevin_Website);
+        Button_RenaWevin_Youtube.onClick.AddListener(OnClick_Button_RenaWevin_Youtube);
+        Button_RenaWevin_Twitter.onClick.AddListener(OnClick_Button_RenaWevin_Twitter);
         Button_Healing_Youtube.onClick.AddListener(OnClick_Button_Healing_Youtube);
         Button_Healing_Twitter.onClick.AddListener(OnClick_Button_Healing_Twitter);
         Button_Runo_Youtube.onClick.AddListener(OnClick_Button_Runo_Youtube);
@@ -625,6 +639,30 @@ public class OptionsPage : MonoBehaviour {
     #endregion
     #region  -> 製作名單
 
+    #region  --> 魚丸蕾娜之家官網
+
+    private void OnClick_Button_RenaWevin_Website() {
+        Core.Instance.audioComponent.PlaySound(SoundId.Click_Normal);
+        OpenUrl("http://renawevin.weebly.com/");
+    }
+
+    #endregion
+    #region  --> 魚丸YT
+
+    private void OnClick_Button_RenaWevin_Youtube() {
+        Core.Instance.audioComponent.PlaySound(SoundId.Click_Normal);
+        OpenUrl("https://www.youtube.com/RenaWevin");
+    }
+
+    #endregion
+    #region  --> 魚丸推特
+
+    private void OnClick_Button_RenaWevin_Twitter() {
+        Core.Instance.audioComponent.PlaySound(SoundId.Click_Normal);
+        OpenUrl("https://twitter.com/renawevin");
+    }
+
+    #endregion
     #region  --> 希靈YT
 
     private void OnClick_Button_Healing_Youtube() {
