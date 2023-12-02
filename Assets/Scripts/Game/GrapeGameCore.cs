@@ -51,6 +51,9 @@ public class GrapeGameCore : MonoBehaviour {
     [SerializeField, Header("右側進化列表物件")]
     private List<FruitEvolutionListObject> fruitEvolutionListObjects = new List<FruitEvolutionListObject>();
 
+    [SerializeField, Header("新水果特效")]
+    private Animator Animator_NEW_SweetPotato;
+
     #endregion
     #region  -> 結算畫面
 
@@ -298,6 +301,8 @@ public class GrapeGameCore : MonoBehaviour {
                         PlayerPrefHelper.SetInfo_ShowSweetPotato(true);
                         //更新進化列表物件
                         UpdateDisplay_FruitEvolutionList();
+                        //播放NEW特效
+                        Animator_NEW_SweetPotato.SetTrigger("Play");
                         //播放特殊音效
                         Core.Instance.audioComponent.PlaySound(SoundId.FirstTimeSweetPotato);
                     }
