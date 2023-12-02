@@ -209,13 +209,6 @@ public class GrapeGameCore : MonoBehaviour {
 
         UpdateCheckPlayerInput();
 
-        if (Input.GetKeyDown(KeyCode.Equals)) {
-            //刪除水果★
-            if (fruitsInScene.Count > 0) {
-                var toDispose = fruitsInScene[0];
-                DisposeFruit(toDispose);
-            }
-        }
     }
 
     #endregion
