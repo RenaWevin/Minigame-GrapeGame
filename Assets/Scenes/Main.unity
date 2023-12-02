@@ -2269,7 +2269,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.0000722644}
+  m_AnchoredPosition: {x: 0, y: 0.00000057602455}
   m_SizeDelta: {x: 512, y: 512}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &253149220
@@ -11009,7 +11009,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 177578956}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.9999957
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -11830,7 +11830,7 @@ Transform:
   m_GameObject: {fileID: 1277362329}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -0.6, z: 1}
-  m_LocalScale: {x: 4.5, y: 7.2, z: 1}
+  m_LocalScale: {x: 4.8, y: 7.2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 704144135}
@@ -19770,6 +19770,7 @@ MonoBehaviour:
   spawnPointContainer: {fileID: 1950812620}
   trans_FruitContainer: {fileID: 661777392}
   SpriteRenderer_Runo: {fileID: 1102220197}
+  Dashboard_JokerMeter: 0
 --- !u!1 &1925213718
 GameObject:
   m_ObjectHideFlags: 0
