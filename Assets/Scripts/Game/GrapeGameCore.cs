@@ -478,9 +478,9 @@ public class GrapeGameCore : MonoBehaviour {
     /// <summary>
     /// 刷新下一個水果
     /// </summary>
-    private async void CoroutineNextFruit() {
+    private IEnumerator CoroutineNextFruit() {
         //等待0.5秒再生成水果與刷新下一個NEXT
-        await Task.Delay(500);
+        yield return new WaitForSeconds(0.5f);
         //生成水果
         fruitOnSpawnpointCursor = SpawnFruit(
             type: nextSpawnFruitType,
@@ -585,7 +585,7 @@ public class GrapeGameCore : MonoBehaviour {
                 fruitOnSpawnpointCursor?.SetEnablePhysics(true);
                 fruitOnSpawnpointCursor?.transform.SetParent(trans_FruitContainer, worldPositionStays: true);
                 fruitOnSpawnpointCursor = null;
-                CoroutineNextFruit();
+                StartCoroutine(CoroutineNextFruit());
             }
         }
         //移動重生點游標
