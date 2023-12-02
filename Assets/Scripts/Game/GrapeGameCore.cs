@@ -510,6 +510,8 @@ public class GrapeGameCore : MonoBehaviour {
         //清除目前分數
         nowYouScore = 0;
         UpdateDisplay_MyScore();
+        //清除Joker計數器
+        jokerMeter_FruitCombine = 0;
         //初始化重生點位置
         spawnPoint.position = spawnPointOriginal;
     }
