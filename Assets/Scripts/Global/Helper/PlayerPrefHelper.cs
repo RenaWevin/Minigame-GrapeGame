@@ -258,6 +258,10 @@ public static class PlayerPrefHelper {
     /// </summary>
     /// <param name="isShow"></param>
     public static void SetInfo_ShowSweetPotato(bool isShow) {
+        if (cache_ShowSweetPotato.isLoaded && cache_ShowSweetPotato.value == isShow) {
+            //已經有相同的值就不儲存了
+            return;
+        }
         cache_ShowSweetPotato.value = isShow;
         cache_ShowSweetPotato.isLoaded = true;
         int value = isShow ? 1 : 0;

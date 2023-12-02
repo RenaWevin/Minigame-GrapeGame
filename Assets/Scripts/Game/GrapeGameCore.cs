@@ -291,6 +291,16 @@ public class GrapeGameCore : MonoBehaviour {
                     UpdateDisplay_MyScore();
                     //增加Joker計數器
                     jokerMeter_FruitCombine++;
+                    //檢查是否要處理地瓜特效
+                    if (nextPhaseFruitType == FruitType.HealingLuka_Uhhuh && !PlayerPrefHelper.GetInfo_ShowSweetPotato()) {
+                        //下一級是地瓜，並且右邊列表還沒有地瓜時
+                        //設定成要顯示
+                        PlayerPrefHelper.SetInfo_ShowSweetPotato(true);
+                        //更新進化列表物件
+                        UpdateDisplay_FruitEvolutionList();
+                        //播放特殊音效
+                        Core.Instance.audioComponent.PlaySound(SoundId.FirstTimeSweetPotato);
+                    }
                 } else {
                     Log.Error($"以下兩個水果不能融合卻被加入到了合成請求中：\n{pair.fruit1.name} 與 {pair.fruit2.name}");
                     continue;
@@ -646,7 +656,7 @@ public class GrapeGameCore : MonoBehaviour {
     /// 更新右側進化列表物件
     /// </summary>
     private void UpdateDisplay_FruitEvolutionList() {
-        bool show_HealingLuka_Uhhuh = false; //★之後還要從遊戲存檔讀取現在能不能顯示
+        bool show_HealingLuka_Uhhuh = PlayerPrefHelper.GetInfo_ShowSweetPotato();
         FruitSpriteType fruitSpriteType = PlayerPrefHelper.GetSetting_FruitSpriteType(); //從遊戲存檔讀取現在是選哪一個
         //處理列表標題
         string titleText;

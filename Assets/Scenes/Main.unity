@@ -2227,7 +2227,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.0006264141}
+  m_AnchoredPosition: {x: 0, y: 0.00008675599}
   m_SizeDelta: {x: 512, y: 512}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &253149220
@@ -10489,7 +10489,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 177578956}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.9999976
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -12534,6 +12534,7 @@ MonoBehaviour:
   Clip_Fruit_Put: {fileID: 8300000, guid: b0df9e34803e7ea4cb6b6593301de41a, type: 3}
   Clip_Fruit_Combine: {fileID: 8300000, guid: df5c9223be7182546846b3247956a46a, type: 3}
   Clip_Fruit_Gray: {fileID: 8300000, guid: b0df9e34803e7ea4cb6b6593301de41a, type: 3}
+  Clip_FirstTimeSweetPotato: {fileID: 8300000, guid: d8a29d7254be39943ab1d30795082b8f, type: 3}
 --- !u!1 &1358485495
 GameObject:
   m_ObjectHideFlags: 0

@@ -20,4 +20,7 @@ public enum SoundId {
     /// <summary>水果灰化</summary>
     Fruit_Gray,
 
+    /// <summary>第一次出現地瓜</summary>
+    FirstTimeSweetPotato,
+
 }

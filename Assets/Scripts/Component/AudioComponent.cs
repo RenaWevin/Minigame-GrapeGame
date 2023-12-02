@@ -56,6 +56,9 @@ public class AudioComponent : MonoBehaviour {
     [SerializeField]
     private AudioClip Clip_Fruit_Gray;
 
+    [SerializeField]
+    private AudioClip Clip_FirstTimeSweetPotato;
+
     #endregion
     #region Awake
 
@@ -69,6 +72,7 @@ public class AudioComponent : MonoBehaviour {
         audioclipDict.Add(SoundId.Fruit_Put, Clip_Fruit_Put);
         audioclipDict.Add(SoundId.Fruit_Combine, Clip_Fruit_Combine);
         audioclipDict.Add(SoundId.Fruit_Gray, Clip_Fruit_Gray);
+        audioclipDict.Add(SoundId.FirstTimeSweetPotato, Clip_FirstTimeSweetPotato);
 
         enableBGM = PlayerPrefHelper.GetSetting_Enable_BGM();
         volumeBGM = PlayerPrefHelper.GetSetting_Volume_BGM();
