@@ -210,7 +210,7 @@ public class GrapeGameCore : MonoBehaviour {
         UpdateCheckPlayerInput();
 
         if (Input.GetKeyDown(KeyCode.Equals)) {
-            //刪除水果
+            //刪除水果★
             if (fruitsInScene.Count > 0) {
                 var toDispose = fruitsInScene[0];
                 DisposeFruit(toDispose);
@@ -340,8 +340,16 @@ public class GrapeGameCore : MonoBehaviour {
     /// <returns></returns>
     private FruitType NewRandomFruitType() {
         int jokerRan = Random.Range(0, 100);
-        int jokerChance = jokerMeter_FruitCombine / 5;
-        jokerChance.FixValueInRange(0, 10);
+        int jokerChance;
+        if (jokerMeter_FruitCombine >= 40) {
+            jokerChance = 50;
+        } else if (jokerMeter_FruitCombine >= 30) {
+            jokerChance = 5;
+        } else if (jokerMeter_FruitCombine >= 10) {
+            jokerChance = 1;
+        } else {
+            jokerChance = 0;
+        }
         if (jokerRan < jokerChance) {
             //計數器歸零
             jokerMeter_FruitCombine = 0;
