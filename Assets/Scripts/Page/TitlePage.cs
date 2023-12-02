@@ -38,6 +38,14 @@ public class TitlePage : MonoBehaviour {
     }
 
     #endregion
+    #region Start
+
+    private void Start() {
+        //播放音樂
+        Core.Instance.audioComponent.PlayBGM();
+    }
+
+    #endregion
     #region 畫面開關
 
     /// <summary>
