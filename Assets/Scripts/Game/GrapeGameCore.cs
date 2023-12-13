@@ -54,6 +54,16 @@ public class GrapeGameCore : MonoBehaviour {
     [SerializeField, Header("新水果特效")]
     private Animator Animator_NEW_SweetPotato;
 
+    [SerializeField, Header("智慧型手機專用虛擬控制器CanvasGroup")]
+    private CanvasGroup CanvasGroup_VirtualButtonForSmartphone;
+
+    [SerializeField, Header("虛擬控制器-向左移動")]
+    private PointerUpDownButton PointerUpDownButton_MoveLeft;
+    [SerializeField, Header("虛擬控制器-放水果")]
+    private Button Button_PutFruit;
+    [SerializeField, Header("虛擬控制器-向右移動")]
+    private PointerUpDownButton PointerUpDownButton_MoveRight;
+
     #endregion
     #region  -> 結算畫面
 
@@ -176,6 +186,10 @@ public class GrapeGameCore : MonoBehaviour {
     //水果合成次數，在生成Joker後會歸零
     private int jokerMeter_FruitCombine;
 
+    //虛擬按鍵左右移動參考
+    private bool isVirtualButtonDown_Left = false;
+    private bool isVirtualButtonDown_Right = false;
+
     #endregion
     #region Unity內建方法
 
@@ -199,6 +213,12 @@ public class GrapeGameCore : MonoBehaviour {
         CanvasGroup_WindowPage_NewRecordSubmit.SetEnable(false);
         //提交分數頁面按鈕
         Button_SaveScore.onClick.AddListener(OnClick_Button_SaveScore_NewRecordSubmit);
+        //虛擬按鍵
+        PointerUpDownButton_MoveLeft.onPointerDown.AddListener(OnPointerDown_PointerUpDownButton_MoveLeft);
+        PointerUpDownButton_MoveLeft.onPointerUp.AddListener(OnPointerUp_PointerUpDownButton_MoveLeft);
+        PointerUpDownButton_MoveRight.onPointerDown.AddListener(OnPointerDown_PointerUpDownButton_MoveRight);
+        PointerUpDownButton_MoveRight.onPointerUp.AddListener(OnPointerUp_PointerUpDownButton_MoveRight);
+        Button_PutFruit.onClick.AddListener(OnClick_Button_PutFruit);
     }
 
     #endregion
@@ -514,6 +534,9 @@ public class GrapeGameCore : MonoBehaviour {
         jokerMeter_FruitCombine = 0;
         //初始化重生點位置
         spawnPoint.position = spawnPointOriginal;
+        //清除虛擬按鍵移動要求
+        isVirtualButtonDown_Left = false;
+        isVirtualButtonDown_Right = false;
     }
 
     #endregion
@@ -541,6 +564,8 @@ public class GrapeGameCore : MonoBehaviour {
         UpdateDisplay_Leaderboard();
         //更新右側進化列表物件
         UpdateDisplay_FruitEvolutionList();
+        //底部虛擬操控按鍵是否顯示
+        CanvasGroup_VirtualButtonForSmartphone.SetEnable(!Define.isPlatformPC);
     }
 
     /// <summary>
@@ -567,6 +592,9 @@ public class GrapeGameCore : MonoBehaviour {
         for (int i = 0; i < fruitsInScene.Count; i++) {
             fruitsInScene[i].SetEnablePhysics(false);
         }
+        //清除虛擬按鍵移動要求
+        isVirtualButtonDown_Left = false;
+        isVirtualButtonDown_Right = false;
     }
 
     #endregion
@@ -581,30 +609,40 @@ public class GrapeGameCore : MonoBehaviour {
         OptionsPage optionsPage = Core.Instance.optionsPage;
         //允許重生點水果物理、處理下一個水果
         if (Input.GetKeyDown(optionsPage.keycode_PutFruit)) {
-            if (fruitOnSpawnpointCursor != null) {
-                //音效
-                Core.Instance.audioComponent.PlaySound(SoundId.Fruit_Put);
-                //放水果
-                fruitOnSpawnpointCursor?.SetEnablePhysics(true);
-                fruitOnSpawnpointCursor?.transform.SetParent(trans_FruitContainer, worldPositionStays: true);
-                fruitOnSpawnpointCursor = null;
-                StartCoroutine(CoroutineNextFruit());
-            }
+            PutFruit();
         }
         //移動重生點游標
         //左
-        if (Input.GetKey(optionsPage.keycode_MoveLeft)) {
+        if (Input.GetKey(optionsPage.keycode_MoveLeft) || isVirtualButtonDown_Left) {
             float newX = spawnPoint.position.x;
             newX -= (Time.deltaTime * moveSpeed);
             newX = Mathf.Max(newX, Trans_LeftBound.position.x);
             spawnPoint.position = new Vector3(newX, spawnPointOriginal.y, spawnPointOriginal.z);
         }
         //右
-        if (Input.GetKey(optionsPage.keycode_MoveRight)) {
+        if (Input.GetKey(optionsPage.keycode_MoveRight) || isVirtualButtonDown_Right) {
             float newX = spawnPoint.position.x;
             newX += (Time.deltaTime * moveSpeed);
             newX = Mathf.Min(newX, Trans_RightBound.position.x);
             spawnPoint.position = new Vector3(newX, spawnPointOriginal.y, spawnPointOriginal.z);
+        }
+    }
+
+    #endregion
+    #region 放水果事件
+
+    /// <summary>
+    /// 放水果事件
+    /// </summary>
+    private void PutFruit() {
+        if (fruitOnSpawnpointCursor != null) {
+            //音效
+            Core.Instance.audioComponent.PlaySound(SoundId.Fruit_Put);
+            //放水果
+            fruitOnSpawnpointCursor?.SetEnablePhysics(true);
+            fruitOnSpawnpointCursor?.transform.SetParent(trans_FruitContainer, worldPositionStays: true);
+            fruitOnSpawnpointCursor = null;
+            StartCoroutine(CoroutineNextFruit());
         }
     }
 
@@ -693,6 +731,36 @@ public class GrapeGameCore : MonoBehaviour {
 
     #endregion
     #region UI按鈕事件
+
+    #region  -> 遊戲畫面上的虛擬按鍵
+
+    //左鍵
+    private void OnPointerDown_PointerUpDownButton_MoveLeft() {
+        if (!gamePlaying || fruitTouchedLimitTrigger) { return; }
+        isVirtualButtonDown_Left = true;
+    }
+    private void OnPointerUp_PointerUpDownButton_MoveLeft() {
+        if (!gamePlaying || fruitTouchedLimitTrigger) { return; }
+        isVirtualButtonDown_Left = false;
+    }
+    //右鍵
+    private void OnPointerDown_PointerUpDownButton_MoveRight() {
+        if (!gamePlaying || fruitTouchedLimitTrigger) { return; }
+        isVirtualButtonDown_Right = true;
+    }
+    private void OnPointerUp_PointerUpDownButton_MoveRight() {
+        if (!gamePlaying || fruitTouchedLimitTrigger) { return; }
+        isVirtualButtonDown_Right = false;
+    }
+    /// <summary>
+    /// 放水果按鍵
+    /// </summary>
+    private void OnClick_Button_PutFruit() {
+        if (!gamePlaying || fruitTouchedLimitTrigger) { return; }
+        PutFruit();
+    }
+
+    #endregion
 
     /// <summary>
     /// 按下離開遊戲按鈕
