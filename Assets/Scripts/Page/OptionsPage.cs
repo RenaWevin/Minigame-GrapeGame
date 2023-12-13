@@ -228,12 +228,7 @@ public class OptionsPage : MonoBehaviour {
         #endregion
         #region  -> 顯示/隱藏電腦版設定
 
-        bool showPCSetting;
-#if UNITY_STANDALONE
-        showPCSetting = true;
-#else
-            showPCSetting = false;
-#endif
+        bool showPCSetting = Define.isPlatformPC;
         Obj_SettingGroup_PC.SetActive(showPCSetting);
 
         #endregion
