@@ -23,6 +23,9 @@ public class HowToPlayPage : MonoBehaviour {
     [SerializeField]
     private Text Text_Controll_HowToPlay;
 
+    [SerializeField]
+    private Image Image_PhoneControll;
+
     #endregion
     #region  -> 水果圖片列表
 
@@ -94,11 +97,19 @@ public class HowToPlayPage : MonoBehaviour {
     /// </summary>
     private void UpdateDisplayPage() {
         //操作方法
-        OptionsPage optionsPage = Core.Instance.optionsPage;
-        string leftkey = Core.Instance.keyCodeNameComponent.GetKeyCodeName(optionsPage.keycode_MoveLeft);
-        string rightkey = Core.Instance.keyCodeNameComponent.GetKeyCodeName(optionsPage.keycode_MoveRight);
-        string putFruit = Core.Instance.keyCodeNameComponent.GetKeyCodeName(optionsPage.keycode_PutFruit);
-        Text_Controll_HowToPlay.text = $"使用 {leftkey} 與 {rightkey} 左右移動\n按 {putFruit} 放下水果";
+        bool showPCSetting = Define.isPlatformPC;
+        if (showPCSetting) {
+            //電腦版
+            OptionsPage optionsPage = Core.Instance.optionsPage;
+            string leftkey = Core.Instance.keyCodeNameComponent.GetKeyCodeName(optionsPage.keycode_MoveLeft);
+            string rightkey = Core.Instance.keyCodeNameComponent.GetKeyCodeName(optionsPage.keycode_MoveRight);
+            string putFruit = Core.Instance.keyCodeNameComponent.GetKeyCodeName(optionsPage.keycode_PutFruit);
+            Text_Controll_HowToPlay.text = $"使用 {leftkey} 與 {rightkey} 左右移動\n按 {putFruit} 放下水果";
+        } else {
+            //手機版說明
+            Text_Controll_HowToPlay.text = "按住手機螢幕 左下 與 右下 的區塊來左右移動\n點擊螢幕 下半中間 區塊放下水果";
+        }
+        Image_PhoneControll.enabled = !showPCSetting;
         //水果列表
         FruitFactory fruitFactory = Core.Instance.grapeGameCore.FruitFactory;
         FruitSpriteType fruitSpriteType = PlayerPrefHelper.GetSetting_FruitSpriteType();
